@@ -158,16 +158,19 @@ function Index() {
 
   const headlineLines = ["FRONTEND", "ARCHITECT"];
   const letterTransforms = React.useMemo(() => {
-    // Stable randomized "crumble" transforms per letter
-    const rand = (min: number, max: number) => Math.random() * (max - min) + min;
-    return headlineLines.map((line) =>
-      line.split("").map((_, i) => ({
-        x: rand(-40, 40),
-        y: rand(60, 180),
-        r: rand(-90, 90),
-        delay: i * 25 + rand(0, 120),
-      })),
-    );
+    // Elastic letter spacing — cascade outward from the center of each line
+    return headlineLines.map((line) => {
+      const len = line.length;
+      const mid = (len - 1) / 2;
+      return line.split("").map((_, i) => {
+        const offset = i - mid; // negative = left, positive = right
+        const distance = Math.abs(offset);
+        return {
+          x: offset * 14, // px to push outward
+          delay: distance * 35, // cascade from center outward
+        };
+      });
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -254,12 +257,10 @@ function Index() {
                     return (
                       <span
                         key={ci}
-                        className="inline-block transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform group-hover:[transform:translate(var(--x),var(--y))_rotate(var(--r))]"
+                        className="inline-block transition-transform duration-[700ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] will-change-transform group-hover:[transform:translateX(var(--x))]"
                         style={
                           {
                             "--x": `${t.x}px`,
-                            "--y": `${t.y}px`,
-                            "--r": `${t.r}deg`,
                             transitionDelay: `${t.delay}ms`,
                           } as React.CSSProperties
                         }
