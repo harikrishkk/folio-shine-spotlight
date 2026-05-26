@@ -127,6 +127,21 @@ function Index() {
 
   const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
 
+  const headlineLines = ["FRONTEND", "ARCHITECT"];
+  const letterTransforms = React.useMemo(() => {
+    // Stable randomized "crumble" transforms per letter
+    const rand = (min: number, max: number) => Math.random() * (max - min) + min;
+    return headlineLines.map((line) =>
+      line.split("").map((_, i) => ({
+        x: rand(-40, 40),
+        y: rand(60, 180),
+        r: rand(-90, 90),
+        delay: i * 25 + rand(0, 120),
+      })),
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   React.useEffect(() => {
     if (!api) return;
     setCurrent(api.selectedScrollSnap());
@@ -198,11 +213,33 @@ function Index() {
             <p className="text-xs md:text-sm font-bold uppercase tracking-[0.3em] text-[var(--color-accent)] mb-6">
               [ Hari Krishnan / Frontend JS Lead ]
             </p>
-            <h1 className="text-5xl sm:text-7xl md:text-[8rem] xl:text-[10rem] font-extrabold leading-[0.85] tracking-tighter mb-8">
-              FRONTEND
-              <br />
-              ARCHITECT
-              <span className="text-[var(--color-accent)]">.</span>
+            <h1 className="group text-5xl sm:text-7xl md:text-[8rem] xl:text-[10rem] font-extrabold leading-[0.85] tracking-tighter mb-8 cursor-default select-none">
+              {headlineLines.map((line, li) => (
+                <span key={line} className="block">
+                  {line.split("").map((ch, ci) => {
+                    const t = letterTransforms[li][ci];
+                    return (
+                      <span
+                        key={ci}
+                        className="inline-block transition-all duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform group-hover:opacity-0 group-hover:[transform:translate(var(--x),var(--y))_rotate(var(--r))]"
+                        style={
+                          {
+                            "--x": `${t.x}px`,
+                            "--y": `${t.y}px`,
+                            "--r": `${t.r}deg`,
+                            transitionDelay: `${t.delay}ms`,
+                          } as React.CSSProperties
+                        }
+                      >
+                        {ch}
+                      </span>
+                    );
+                  })}
+                  {li === headlineLines.length - 1 && (
+                    <span className="text-[var(--color-accent)] inline-block">.</span>
+                  )}
+                </span>
+              ))}
             </h1>
             <p className="max-w-xl text-base md:text-lg text-muted leading-relaxed">
               Leading engineering teams at the intersection of scale and performance. Specializing
