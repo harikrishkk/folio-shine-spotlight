@@ -13,6 +13,14 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
+type FormState = {
+  name: string;
+  email: string;
+  query: string;
+};
+
+const initialForm: FormState = { name: "", email: "", query: "" };
+
 const NAV = [
   { href: "#workshops", label: "WORKSHOPS" },
   { href: "#timeline", label: "EXPERIENCE" },
@@ -133,6 +141,25 @@ function Index() {
   >([]);
   const [cursor, setCursor] = React.useState<{ x: number; y: number } | null>(null);
   const sparkId = React.useRef(0);
+
+  // Contact form state
+  const [form, setForm] = React.useState<FormState>(initialForm);
+  const [submitted, setSubmitted] = React.useState(false);
+
+  const handleFormChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitted(true);
+    setTimeout(() => {
+      setSubmitted(false);
+      setForm(initialForm);
+    }, 3000);
+  };
 
   const handleHeadlineMove = (e: React.MouseEvent) => {
     const x = e.clientX;
@@ -526,18 +553,70 @@ function Index() {
                 </div>
               </div>
             </div>
-            <div className="flex flex-col justify-end items-start md:items-end">
-              <div className="bg-foreground text-background p-6 w-full max-w-xs ring-1 ring-foreground">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="size-2 bg-green-500 rounded-full animate-pulse" />
-                  <span className="text-[10px] font-bold uppercase tracking-widest">
-                    System Status: Optimal
-                  </span>
+            <div className="flex flex-col justify-end items-start md:items-end w-full">
+              {submitted ? (
+                <div className="w-full max-w-sm p-8 border border-[var(--color-accent)] text-center">
+                  <div className="size-12 mx-auto mb-4 rounded-full bg-[var(--color-accent)]/20 grid place-items-center text-lg">
+                    ✓
+                  </div>
+                  <p className="text-xl font-extrabold mb-2">Message received</p>
+                  <p className="text-sm text-muted">I'll get back to you shortly.</p>
                 </div>
-                <p className="text-xs text-background/60 leading-relaxed">
-                  Currently accepting workshop bookings for Q3/Q4. Consulting slots limited.
-                </p>
-              </div>
+              ) : (
+                <form
+                  onSubmit={handleSubmit}
+                  className="w-full max-w-sm space-y-4"
+                >
+                  <div>
+                    <label htmlFor="name" className="text-[10px] font-bold uppercase tracking-widest block mb-2">
+                      Name
+                    </label>
+                    <input
+                      id="name"
+                      name="name"
+                      type="text"
+                      required
+                      value={form.name}
+                      onChange={handleFormChange}
+                      className="w-full bg-transparent border border-foreground/20 px-4 py-3 text-sm focus:outline-none focus:border-[var(--color-accent)] transition-colors"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="email" className="text-[10px] font-bold uppercase tracking-widest block mb-2">
+                      Email
+                    </label>
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      required
+                      value={form.email}
+                      onChange={handleFormChange}
+                      className="w-full bg-transparent border border-foreground/20 px-4 py-3 text-sm focus:outline-none focus:border-[var(--color-accent)] transition-colors"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="query" className="text-[10px] font-bold uppercase tracking-widest block mb-2">
+                      Your Query
+                    </label>
+                    <textarea
+                      id="query"
+                      name="query"
+                      required
+                      rows={4}
+                      value={form.query}
+                      onChange={handleFormChange}
+                      className="w-full bg-transparent border border-foreground/20 px-4 py-3 text-sm focus:outline-none focus:border-[var(--color-accent)] transition-colors resize-none"
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    className="w-full py-4 bg-foreground text-background font-bold uppercase tracking-widest text-xs hover:bg-[var(--color-accent)] transition-colors mt-2"
+                  >
+                    Send Message
+                  </button>
+                </form>
+              )}
             </div>
           </div>
           <div className="mt-16 md:mt-24 pt-8 border-t border-foreground/10 text-[10px] text-muted flex flex-col sm:flex-row gap-3 justify-between uppercase tracking-widest">
