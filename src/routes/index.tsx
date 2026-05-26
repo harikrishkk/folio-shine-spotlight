@@ -13,6 +13,14 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
+type FormState = {
+  name: string;
+  email: string;
+  query: string;
+};
+
+const initialForm: FormState = { name: "", email: "", query: "" };
+
 const NAV = [
   { href: "#workshops", label: "WORKSHOPS" },
   { href: "#timeline", label: "EXPERIENCE" },
