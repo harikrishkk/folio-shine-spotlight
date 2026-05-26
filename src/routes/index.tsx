@@ -158,19 +158,12 @@ function Index() {
 
   const headlineLines = ["FRONTEND", "ARCHITECT"];
   const letterTransforms = React.useMemo(() => {
-    // Elastic letter spacing — cascade outward from the center of each line
-    return headlineLines.map((line) => {
-      const len = line.length;
-      const mid = (len - 1) / 2;
-      return line.split("").map((_, i) => {
-        const offset = i - mid; // negative = left, positive = right
-        const distance = Math.abs(offset);
-        return {
-          x: offset * 14, // px to push outward
-          delay: distance * 35, // cascade from center outward
-        };
-      });
-    });
+    // Variable font hover — weight cascades across each letter
+    return headlineLines.map((line) =>
+      line.split("").map((_, i) => ({
+        delay: i * 40, // left-to-right cascade
+      })),
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -248,7 +241,8 @@ function Index() {
             <h1
               onMouseMove={handleHeadlineMove}
               onMouseLeave={handleHeadlineLeave}
-              className="group text-5xl sm:text-7xl md:text-[8rem] xl:text-[10rem] font-extrabold leading-[0.85] tracking-tighter mb-8 select-none [cursor:none]"
+              className="group text-5xl sm:text-7xl md:text-[8rem] xl:text-[10rem] leading-[0.85] tracking-tighter mb-8 select-none [cursor:none]"
+              style={{ fontFamily: '"Inter", system-ui, sans-serif', fontWeight: 100 }}
             >
               {headlineLines.map((line, li) => (
                 <span key={line} className="block">
@@ -257,11 +251,11 @@ function Index() {
                     return (
                       <span
                         key={ci}
-                        className="inline-block transition-transform duration-[700ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] will-change-transform group-hover:[transform:translateX(var(--x))]"
+                        className="inline-block transition-[font-weight,font-stretch,letter-spacing] duration-[600ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] will-change-[font-weight] group-hover:[font-weight:900] group-hover:[font-stretch:125%] group-hover:[letter-spacing:0.02em]"
                         style={
                           {
-                            "--x": `${t.x}px`,
                             transitionDelay: `${t.delay}ms`,
+                            fontVariationSettings: '"wght" 100, "wdth" 75',
                           } as React.CSSProperties
                         }
                       >
@@ -270,7 +264,7 @@ function Index() {
                     );
                   })}
                   {li === headlineLines.length - 1 && (
-                    <span className="text-[var(--color-accent)] inline-block">.</span>
+                    <span className="text-[var(--color-accent)] inline-block font-extrabold">.</span>
                   )}
                 </span>
               ))}
