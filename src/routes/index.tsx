@@ -184,19 +184,6 @@ function Index() {
   const handleHeadlineLeave = () => setCursor(null);
 
   const headlineLines = ["FRONTEND", "ARCHITECT"];
-  const letterTransforms = React.useMemo(() => {
-    // Stable randomized "crumble" transforms per letter
-    const rand = (min: number, max: number) => Math.random() * (max - min) + min;
-    return headlineLines.map((line) =>
-      line.split("").map((_, i) => ({
-        x: rand(-40, 40),
-        y: rand(60, 180),
-        r: rand(-90, 90),
-        delay: i * 25 + rand(0, 120),
-      })),
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   React.useEffect(() => {
     if (!api) return;
