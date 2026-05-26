@@ -158,10 +158,14 @@ function Index() {
 
   const headlineLines = ["FRONTEND", "ARCHITECT"];
   const letterTransforms = React.useMemo(() => {
-    // Variable font hover — weight cascades across each letter
+    // Stable randomized "crumble" transforms per letter
+    const rand = (min: number, max: number) => Math.random() * (max - min) + min;
     return headlineLines.map((line) =>
       line.split("").map((_, i) => ({
-        delay: i * 40, // left-to-right cascade
+        x: rand(-40, 40),
+        y: rand(60, 180),
+        r: rand(-90, 90),
+        delay: i * 25 + rand(0, 120),
       })),
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -241,8 +245,7 @@ function Index() {
             <h1
               onMouseMove={handleHeadlineMove}
               onMouseLeave={handleHeadlineLeave}
-              className="group text-5xl sm:text-7xl md:text-[8rem] xl:text-[10rem] leading-[0.85] tracking-tighter mb-8 select-none [cursor:none]"
-              style={{ fontFamily: '"Inter", system-ui, sans-serif', fontWeight: 100 }}
+              className="group text-5xl sm:text-7xl md:text-[8rem] xl:text-[10rem] font-extrabold leading-[0.85] tracking-tighter mb-8 select-none [cursor:none]"
             >
               {headlineLines.map((line, li) => (
                 <span key={line} className="block">
@@ -251,11 +254,13 @@ function Index() {
                     return (
                       <span
                         key={ci}
-                        className="inline-block transition-[font-weight,font-stretch,letter-spacing] duration-[600ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] will-change-[font-weight] group-hover:[font-weight:900] group-hover:[font-stretch:125%] group-hover:[letter-spacing:0.02em]"
+                        className="inline-block transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform group-hover:[transform:translate(var(--x),var(--y))_rotate(var(--r))]"
                         style={
                           {
+                            "--x": `${t.x}px`,
+                            "--y": `${t.y}px`,
+                            "--r": `${t.r}deg`,
                             transitionDelay: `${t.delay}ms`,
-                            fontVariationSettings: '"wght" 100, "wdth" 75',
                           } as React.CSSProperties
                         }
                       >
@@ -264,7 +269,7 @@ function Index() {
                     );
                   })}
                   {li === headlineLines.length - 1 && (
-                    <span className="text-[var(--color-accent)] inline-block font-extrabold">.</span>
+                    <span className="text-[var(--color-accent)] inline-block">.</span>
                   )}
                 </span>
               ))}
