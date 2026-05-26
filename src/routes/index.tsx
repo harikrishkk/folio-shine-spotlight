@@ -221,7 +221,7 @@ function Index() {
                     return (
                       <span
                         key={ci}
-                        className="inline-block transition-all duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform group-hover:opacity-0 group-hover:[transform:translate(var(--x),var(--y))_rotate(var(--r))]"
+                        className="inline-block transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform group-hover:[transform:translate(var(--x),var(--y))_rotate(var(--r))]"
                         style={
                           {
                             "--x": `${t.x}px`,
