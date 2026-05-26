@@ -202,13 +202,14 @@
   100% { transform: skew(0deg); }
 }
 
-.glitch-text {
+.glitch-char {
   position: relative;
   display: inline-block;
+  white-space: pre;
 }
 
-.glitch-text::before,
-.glitch-text::after {
+.glitch-char::before,
+.glitch-char::after {
   content: attr(data-text);
   position: absolute;
   top: 0;
@@ -220,31 +221,31 @@
   pointer-events: none;
 }
 
-.glitch-text::before {
+.glitch-char::before {
   left: 2px;
   text-shadow: -2px 0 oklch(0.65 0.2 200);
   clip-path: inset(0 0 100% 0);
 }
 
-.glitch-text::after {
+.glitch-char::after {
   left: -2px;
   text-shadow: -2px 0 oklch(0.65 0.2 340);
   clip-path: inset(0 0 100% 0);
 }
 
-.group:hover .glitch-text::before,
-.group:hover .glitch-text::after {
+.glitch-char:hover::before,
+.glitch-char:hover::after {
   opacity: 1;
 }
 
-.group:hover .glitch-text::before {
+.glitch-char:hover::before {
   animation: glitch-slice-1 0.35s cubic-bezier(0.16, 1, 0.3, 1) infinite alternate;
 }
 
-.group:hover .glitch-text::after {
+.glitch-char:hover::after {
   animation: glitch-slice-2 0.35s cubic-bezier(0.16, 1, 0.3, 1) infinite alternate-reverse;
 }
 
-.group:hover .glitch-text {
+.glitch-char:hover {
   animation: glitch-skew 0.3s cubic-bezier(0.16, 1, 0.3, 1) infinite;
 }
