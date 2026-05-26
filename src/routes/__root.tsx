@@ -72,11 +72,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Hari Krishnan — Frontend JS Lead & Workshop Trainer" },
+      {
+        name: "description",
+        content:
+          "Hari Krishnan: Frontend JavaScript Lead and trainer running advanced Angular and React workshops for engineering teams.",
+      },
+      { name: "author", content: "Hari Krishnan" },
+      { property: "og:title", content: "Hari Krishnan — Frontend JS Lead & Workshop Trainer" },
+      {
+        property: "og:description",
+        content:
+          "Frontend Architect specializing in enterprise Angular and React. Workshops, consulting, and engineering leadership.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
