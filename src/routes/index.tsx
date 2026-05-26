@@ -127,6 +127,35 @@ function Index() {
 
   const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
 
+  // Spark trail cursor for the headline
+  const [sparks, setSparks] = React.useState<
+    { id: number; x: number; y: number; dx: number; dy: number; size: number }[]
+  >([]);
+  const [cursor, setCursor] = React.useState<{ x: number; y: number } | null>(null);
+  const sparkId = React.useRef(0);
+
+  const handleHeadlineMove = (e: React.MouseEvent) => {
+    const x = e.clientX;
+    const y = e.clientY;
+    setCursor({ x, y });
+    const count = 2;
+    const newSparks = Array.from({ length: count }).map(() => ({
+      id: sparkId.current++,
+      x: x + (Math.random() - 0.5) * 12,
+      y: y + (Math.random() - 0.5) * 12,
+      dx: (Math.random() - 0.5) * 80,
+      dy: Math.random() * 60 + 10,
+      size: Math.random() * 4 + 2,
+    }));
+    setSparks((prev) => [...prev.slice(-40), ...newSparks]);
+    newSparks.forEach((s) => {
+      setTimeout(() => {
+        setSparks((prev) => prev.filter((p) => p.id !== s.id));
+      }, 700);
+    });
+  };
+  const handleHeadlineLeave = () => setCursor(null);
+
   const headlineLines = ["FRONTEND", "ARCHITECT"];
   const letterTransforms = React.useMemo(() => {
     // Stable randomized "crumble" transforms per letter
@@ -213,7 +242,11 @@ function Index() {
             <p className="text-xs md:text-sm font-bold uppercase tracking-[0.3em] text-[var(--color-accent)] mb-6">
               [ Hari Krishnan / Frontend JS Lead ]
             </p>
-            <h1 className="group text-5xl sm:text-7xl md:text-[8rem] xl:text-[10rem] font-extrabold leading-[0.85] tracking-tighter mb-8 cursor-default select-none">
+            <h1
+              onMouseMove={handleHeadlineMove}
+              onMouseLeave={handleHeadlineLeave}
+              className="group text-5xl sm:text-7xl md:text-[8rem] xl:text-[10rem] font-extrabold leading-[0.85] tracking-tighter mb-8 select-none [cursor:none]"
+            >
               {headlineLines.map((line, li) => (
                 <span key={line} className="block">
                   {line.split("").map((ch, ci) => {
@@ -241,6 +274,37 @@ function Index() {
                 </span>
               ))}
             </h1>
+            {/* Spark trail */}
+            <div className="pointer-events-none fixed inset-0 z-[60]">
+              {cursor && (
+                <div
+                  className="absolute size-4 rounded-full bg-[var(--color-accent)] mix-blend-difference"
+                  style={{
+                    left: cursor.x,
+                    top: cursor.y,
+                    transform: "translate(-50%, -50%)",
+                    boxShadow: "0 0 20px var(--color-accent), 0 0 40px var(--color-accent)",
+                  }}
+                />
+              )}
+              {sparks.map((s) => (
+                <span
+                  key={s.id}
+                  className="spark absolute rounded-full bg-[var(--color-accent)]"
+                  style={
+                    {
+                      left: s.x,
+                      top: s.y,
+                      width: s.size,
+                      height: s.size,
+                      boxShadow: "0 0 8px var(--color-accent)",
+                      "--dx": `${s.dx}px`,
+                      "--dy": `${s.dy}px`,
+                    } as React.CSSProperties
+                  }
+                />
+              ))}
+            </div>
             <p className="max-w-xl text-base md:text-lg text-muted leading-relaxed">
               Leading engineering teams at the intersection of scale and performance. Specializing
               in high-frequency Angular systems and React design patterns — and training the next
