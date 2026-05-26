@@ -142,6 +142,25 @@ function Index() {
   const [cursor, setCursor] = React.useState<{ x: number; y: number } | null>(null);
   const sparkId = React.useRef(0);
 
+  // Contact form state
+  const [form, setForm] = React.useState<FormState>(initialForm);
+  const [submitted, setSubmitted] = React.useState(false);
+
+  const handleFormChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitted(true);
+    setTimeout(() => {
+      setSubmitted(false);
+      setForm(initialForm);
+    }, 3000);
+  };
+
   const handleHeadlineMove = (e: React.MouseEvent) => {
     const x = e.clientX;
     const y = e.clientY;
