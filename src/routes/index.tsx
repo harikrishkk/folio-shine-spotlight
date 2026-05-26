@@ -7,7 +7,7 @@ import {
   CarouselItem,
   type CarouselApi,
 } from "@/components/ui/carousel";
-import { Menu, X, ArrowRight, ArrowLeft, Github, Linkedin, Twitter } from "lucide-react";
+import { Menu, X, ArrowRight, ArrowLeft, Github, Linkedin, Twitter, Sun, Moon } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -110,6 +110,22 @@ function Index() {
   const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = React.useState(0);
   const autoplay = React.useRef(Autoplay({ delay: 5000, stopOnInteraction: false }));
+  const [theme, setTheme] = React.useState<"light" | "dark">("light");
+
+  React.useEffect(() => {
+    const stored = localStorage.getItem("theme") as "light" | "dark" | null;
+    const initial =
+      stored ??
+      (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    setTheme(initial);
+  }, []);
+
+  React.useEffect(() => {
+    document.documentElement.classList.toggle("dark", theme === "dark");
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
 
   React.useEffect(() => {
     if (!api) return;
@@ -140,14 +156,24 @@ function Index() {
               </a>
             ))}
           </div>
-          <button
-            type="button"
-            aria-label="Toggle menu"
-            className="md:hidden border border-foreground/20 p-2"
-            onClick={() => setOpen((v) => !v)}
-          >
-            {open ? <X className="size-4" /> : <Menu className="size-4" />}
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              aria-label="Toggle theme"
+              className="border border-foreground/20 p-2 hover:border-[var(--color-accent)] transition-colors"
+              onClick={toggleTheme}
+            >
+              {theme === "dark" ? <Sun className="size-4" /> : <Moon className="size-4" />}
+            </button>
+            <button
+              type="button"
+              aria-label="Toggle menu"
+              className="md:hidden border border-foreground/20 p-2"
+              onClick={() => setOpen((v) => !v)}
+            >
+              {open ? <X className="size-4" /> : <Menu className="size-4" />}
+            </button>
+          </div>
         </div>
         {open && (
           <div className="md:hidden border-t border-foreground/10 px-6 py-4 flex flex-col gap-4 text-sm font-bold">
