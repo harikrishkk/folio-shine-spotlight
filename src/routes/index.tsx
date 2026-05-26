@@ -184,19 +184,6 @@ function Index() {
   const handleHeadlineLeave = () => setCursor(null);
 
   const headlineLines = ["FRONTEND", "ARCHITECT"];
-  const letterTransforms = React.useMemo(() => {
-    // Stable randomized "crumble" transforms per letter
-    const rand = (min: number, max: number) => Math.random() * (max - min) + min;
-    return headlineLines.map((line) =>
-      line.split("").map((_, i) => ({
-        x: rand(-40, 40),
-        y: rand(60, 180),
-        r: rand(-90, 90),
-        delay: i * 25 + rand(0, 120),
-      })),
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   React.useEffect(() => {
     if (!api) return;
@@ -275,28 +262,14 @@ function Index() {
               className="group text-5xl sm:text-7xl md:text-[8rem] xl:text-[10rem] font-extrabold leading-[0.85] tracking-tighter mb-8 select-none [cursor:none]"
             >
               {headlineLines.map((line, li) => (
-                <span key={line} className="block">
-                  {line.split("").map((ch, ci) => {
-                    const t = letterTransforms[li][ci];
-                    return (
-                      <span
-                        key={ci}
-                        className="inline-block transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform group-hover:[transform:translate(var(--x),var(--y))_rotate(var(--r))]"
-                        style={
-                          {
-                            "--x": `${t.x}px`,
-                            "--y": `${t.y}px`,
-                            "--r": `${t.r}deg`,
-                            transitionDelay: `${t.delay}ms`,
-                          } as React.CSSProperties
-                        }
-                      >
-                        {ch}
-                      </span>
-                    );
-                  })}
+                <span
+                  key={line}
+                  className="glitch-text block"
+                  data-text={li === headlineLines.length - 1 ? `${line}.` : line}
+                >
+                  {line}
                   {li === headlineLines.length - 1 && (
-                    <span className="text-[var(--color-accent)] inline-block">.</span>
+                    <span className="text-[var(--color-accent)]">.</span>
                   )}
                 </span>
               ))}
