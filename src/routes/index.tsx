@@ -262,14 +262,23 @@ function Index() {
               className="group text-5xl sm:text-7xl md:text-[8rem] xl:text-[10rem] font-extrabold leading-[0.85] tracking-tighter mb-8 select-none [cursor:none]"
             >
               {headlineLines.map((line, li) => (
-                <span
-                  key={line}
-                  className="glitch-text block"
-                  data-text={li === headlineLines.length - 1 ? `${line}.` : line}
-                >
-                  {line}
+                <span key={line} className="block">
+                  {Array.from(line).map((ch, i) => (
+                    <span
+                      key={`${li}-${i}`}
+                      className="glitch-char"
+                      data-text={ch}
+                    >
+                      {ch}
+                    </span>
+                  ))}
                   {li === headlineLines.length - 1 && (
-                    <span className="text-[var(--color-accent)]">.</span>
+                    <span
+                      className="glitch-char text-[var(--color-accent)]"
+                      data-text="."
+                    >
+                      .
+                    </span>
                   )}
                 </span>
               ))}
