@@ -277,10 +277,10 @@ function Index() {
                   return (
                     <div
                       key={name}
-                      className="group relative flex flex-col items-center gap-1.5 text-foreground/40 hover:text-[var(--color-accent)] transition-colors duration-300"
+                      className="group relative flex flex-col items-center gap-2 text-foreground/50 hover:text-[var(--color-accent)] transition-colors duration-300"
                       title={name}
                     >
-                      <div className="p-2 border border-foreground/10 group-hover:border-[var(--color-accent)]/40 transition-colors duration-300">
+                      <div className="p-1 transition-colors duration-300">
                         {logo}
                       </div>
                       <span className="text-[9px] font-bold uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity duration-300">
