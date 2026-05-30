@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as BlogsRouteImport } from './routes/blogs'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BlogsGistIdRouteImport } from './routes/blogs.$gistId'
 
 const BlogsRoute = BlogsRouteImport.update({
   id: '/blogs',
@@ -22,31 +23,39 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogsGistIdRoute = BlogsGistIdRouteImport.update({
+  id: '/$gistId',
+  path: '/$gistId',
+  getParentRoute: () => BlogsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/blogs': typeof BlogsRoute
+  '/blogs': typeof BlogsRouteWithChildren
+  '/blogs/$gistId': typeof BlogsGistIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/blogs': typeof BlogsRoute
+  '/blogs': typeof BlogsRouteWithChildren
+  '/blogs/$gistId': typeof BlogsGistIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/blogs': typeof BlogsRoute
+  '/blogs': typeof BlogsRouteWithChildren
+  '/blogs/$gistId': typeof BlogsGistIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/blogs'
+  fullPaths: '/' | '/blogs' | '/blogs/$gistId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/blogs'
-  id: '__root__' | '/' | '/blogs'
+  to: '/' | '/blogs' | '/blogs/$gistId'
+  id: '__root__' | '/' | '/blogs' | '/blogs/$gistId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  BlogsRoute: typeof BlogsRoute
+  BlogsRoute: typeof BlogsRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +74,29 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blogs/$gistId': {
+      id: '/blogs/$gistId'
+      path: '/$gistId'
+      fullPath: '/blogs/$gistId'
+      preLoaderRoute: typeof BlogsGistIdRouteImport
+      parentRoute: typeof BlogsRoute
+    }
   }
 }
 
+interface BlogsRouteChildren {
+  BlogsGistIdRoute: typeof BlogsGistIdRoute
+}
+
+const BlogsRouteChildren: BlogsRouteChildren = {
+  BlogsGistIdRoute: BlogsGistIdRoute,
+}
+
+const BlogsRouteWithChildren = BlogsRoute._addFileChildren(BlogsRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  BlogsRoute: BlogsRoute,
+  BlogsRoute: BlogsRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
