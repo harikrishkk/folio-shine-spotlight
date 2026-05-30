@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import * as React from "react";
 import Autoplay from "embla-carousel-autoplay";
 import {
@@ -213,6 +214,12 @@ function Index() {
                 {n.label}
               </a>
             ))}
+            <Link
+              to="/blogs"
+              className="hover:text-[var(--color-accent)] transition-colors"
+            >
+              BLOGS
+            </Link>
           </div>
           <div className="flex items-center gap-2">
             <button
@@ -245,6 +252,13 @@ function Index() {
                 {n.label}
               </a>
             ))}
+            <Link
+              to="/blogs"
+              onClick={() => setOpen(false)}
+              className="hover:text-[var(--color-accent)]"
+            >
+              BLOGS
+            </Link>
           </div>
         )}
       </nav>
