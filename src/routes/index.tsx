@@ -214,6 +214,12 @@ function Index() {
                 {n.label}
               </a>
             ))}
+            <Link
+              to="/blogs"
+              className="hover:text-[var(--color-accent)] transition-colors"
+            >
+              BLOGS
+            </Link>
           </div>
           <div className="flex items-center gap-2">
             <button
