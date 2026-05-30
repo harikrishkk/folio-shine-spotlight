@@ -1,10 +1,12 @@
+import * as React from "react";
+
 /* ============================================================
  * Tech Logos — monochrome inline SVGs for the brutalist theme.
  * Each logo is ~28×28 viewBox, single-path where possible,
  * styled with currentColor so parent can control fill/stroke.
  * ============================================================ */
 
-export const TECH_LOGOS: Record<string, JSX.Element> = {
+export const TECH_LOGOS: Record<string, React.JSX.Element> = {
   Angular: (
     <svg viewBox="0 0 32 32" fill="none" className="size-7" aria-label="Angular">
       <path d="M16 2L2 7l3 15 11 8 11-8 3-15L16 2z" fill="currentColor" opacity="0.12" />
