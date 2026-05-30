@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { GIST_IDS, fetchGist, type Gist } from "@/lib/gists";
+import { BLOG_ENTRIES, ALL_TAGS, fetchGist, type Gist } from "@/lib/gists";
 
 export const Route = createFileRoute("/blogs/")({
   head: () => ({
@@ -23,6 +24,13 @@ export const Route = createFileRoute("/blogs/")({
 });
 
 function BlogsPage() {
+  const [activeTag, setActiveTag] = useState<string>("ALL");
+
+  const visible =
+    activeTag === "ALL"
+      ? BLOG_ENTRIES
+      : BLOG_ENTRIES.filter((b) => b.tags.includes(activeTag));
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-foreground/10">
@@ -53,17 +61,43 @@ function BlogsPage() {
           </p>
         </header>
 
+        <div className="mb-8 flex flex-wrap gap-2">
+          {["ALL", ...ALL_TAGS].map((tag) => {
+            const active = tag === activeTag;
+            return (
+              <button
+                key={tag}
+                type="button"
+                onClick={() => setActiveTag(tag)}
+                className={
+                  "text-xs font-bold tracking-[0.15em] px-3 py-2 border transition-colors " +
+                  (active
+                    ? "bg-foreground text-background border-foreground"
+                    : "border-foreground/20 hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]")
+                }
+              >
+                {tag.toUpperCase()}
+              </button>
+            );
+          })}
+        </div>
+
         <ul className="border-t border-foreground/10">
-          {GIST_IDS.map((id) => (
-            <BlogRow key={id} id={id} />
+          {visible.map((entry) => (
+            <BlogRow key={entry.id} id={entry.id} tags={entry.tags} />
           ))}
+          {visible.length === 0 && (
+            <li className="py-12 text-sm font-mono text-muted-foreground">
+              No blogs tagged "{activeTag}" yet.
+            </li>
+          )}
         </ul>
       </main>
     </div>
   );
 }
 
-function BlogRow({ id }: { id: string }) {
+function BlogRow({ id, tags }: { id: string; tags: string[] }) {
   const { data, isLoading, error } = useQuery<Gist>({
     queryKey: ["gist", id],
     queryFn: () => fetchGist(id),
@@ -89,9 +123,14 @@ function BlogRow({ id }: { id: string }) {
               {isLoading ? "Loading…" : error ? "Failed to load" : title}
             </h2>
             <div className="mt-3 flex flex-wrap items-center gap-3 text-xs font-mono text-muted-foreground">
-              <span className="border border-foreground/20 px-2 py-1">
-                GIST · {id.slice(0, 7)}
-              </span>
+              {tags.map((t) => (
+                <span
+                  key={t}
+                  className="border border-[var(--color-accent)]/40 text-[var(--color-accent)] px-2 py-1"
+                >
+                  {t.toUpperCase()}
+                </span>
+              ))}
               {firstFile?.language && (
                 <span className="border border-foreground/20 px-2 py-1">
                   {firstFile.language.toUpperCase()}
