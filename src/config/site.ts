@@ -54,6 +54,10 @@ export type SiteConfig = {
     successTitle: string;
     successMessage: string;
   };
+  techStack: {
+    label: string;
+    logos: string[];
+  };
   footer: {
     copyright: string;
     tagline: string;
