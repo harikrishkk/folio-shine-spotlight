@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import * as React from "react";
 import Autoplay from "embla-carousel-autoplay";
 import {
