@@ -197,6 +197,10 @@ export const siteConfig: SiteConfig = {
     successTitle: "Message received",
     successMessage: "I'll get back to you shortly.",
   },
+  techStack: {
+    label: "[ Trusted By ]",
+    logos: ["Angular", "React", "Vue", "Node", "TypeScript", "Supabase", "Claude", "Copilot", "Nx", "RxJS"],
+  },
   footer: {
     copyright: "© 2026 Hari Krishnan",
     tagline: "Built with precision",
