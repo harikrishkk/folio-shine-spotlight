@@ -24,11 +24,12 @@ type FormState = {
 
 const initialForm: FormState = { name: "", email: "", query: "" };
 
-const { brand, nav: NAV, banner, marquee: MARQUEE, career, masterclass, testimonials, contact, footer } =
+const { brand, nav: NAV, banner, marquee: MARQUEE, career, masterclass, testimonials, contact, techStack, footer } =
   siteConfig;
 const TIMELINE = career.items;
 const WORKSHOPS = masterclass.modules;
 const TESTIMONIALS = testimonials.items;
+const TECH_NAMES = techStack.logos;
 
 const SOCIAL_ICONS = { github: Github, linkedin: Linkedin, twitter: Twitter };
 
