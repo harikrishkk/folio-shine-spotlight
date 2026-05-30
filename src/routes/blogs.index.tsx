@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { GIST_IDS, fetchGist, type Gist } from "@/lib/gists";
 
-export const Route = createFileRoute("/blogs")({
+export const Route = createFileRoute("/blogs/")({
   head: () => ({
     meta: [
       { title: "Blogs — Hari Krishnan" },
