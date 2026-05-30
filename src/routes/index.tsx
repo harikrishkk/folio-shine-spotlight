@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/carousel";
 import { Menu, X, ArrowRight, ArrowLeft, Github, Linkedin, Twitter, Sun, Moon } from "lucide-react";
 import { siteConfig } from "@/config/site";
+import { TECH_LOGOS } from "@/components/TechLogos";
 
 export const Route = createFileRoute("/")({
   component: Index,
