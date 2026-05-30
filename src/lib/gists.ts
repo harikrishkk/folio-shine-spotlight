@@ -1,9 +1,20 @@
 export const GIST_USER = "harikrishkk";
 
-export const GIST_IDS: string[] = [
-  "9ba02bca24153bd01e1e0c138437dcce",
-  "c82d1fe0054379a2fdf0a4397493a78d",
+export type BlogEntry = {
+  id: string;
+  tags: string[];
+};
+
+// Edit the tags below to categorize each gist. Tags drive the filter pills.
+export const BLOG_ENTRIES: BlogEntry[] = [
+  { id: "9ba02bca24153bd01e1e0c138437dcce", tags: ["Angular"] },
+  { id: "c82d1fe0054379a2fdf0a4397493a78d", tags: ["React"] },
 ];
+
+// All unique tags across blogs, in stable order.
+export const ALL_TAGS: string[] = Array.from(
+  new Set(BLOG_ENTRIES.flatMap((b) => b.tags)),
+);
 
 export type GistFile = {
   filename: string;
