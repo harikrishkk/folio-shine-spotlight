@@ -249,3 +249,102 @@
 .glitch-char:hover {
   animation: glitch-skew 0.3s cubic-bezier(0.16, 1, 0.3, 1) infinite;
 }
+
+/* ============================================================
+ * Gist markdown prose — matches the brutalist mono theme
+ * ============================================================ */
+.gist-prose {
+  color: var(--color-foreground);
+  font-size: 1rem;
+  line-height: 1.75;
+}
+.gist-prose > * + * { margin-top: 1.25rem; }
+.gist-prose h1,
+.gist-prose h2,
+.gist-prose h3,
+.gist-prose h4 {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+.gist-prose h1 { font-size: 2.25rem; }
+.gist-prose h2 {
+  font-size: 1.75rem;
+  border-bottom: 1px solid color-mix(in oklab, var(--color-foreground) 10%, transparent);
+  padding-bottom: 0.5rem;
+}
+.gist-prose h3 { font-size: 1.35rem; }
+.gist-prose h4 { font-size: 1.1rem; }
+.gist-prose p { color: var(--color-foreground); }
+.gist-prose a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+.gist-prose a:hover { text-decoration-thickness: 2px; }
+.gist-prose strong { font-weight: 800; }
+.gist-prose em { font-style: italic; }
+.gist-prose ul,
+.gist-prose ol {
+  padding-left: 1.5rem;
+}
+.gist-prose ul { list-style: square; }
+.gist-prose ol { list-style: decimal; }
+.gist-prose li { margin-top: 0.4rem; }
+.gist-prose li::marker { color: var(--color-accent); }
+.gist-prose blockquote {
+  border-left: 3px solid var(--color-accent);
+  padding: 0.25rem 0 0.25rem 1rem;
+  color: var(--color-muted-foreground);
+  font-style: italic;
+  background: color-mix(in oklab, var(--color-foreground) 3%, transparent);
+}
+.gist-prose hr {
+  border: 0;
+  border-top: 1px solid color-mix(in oklab, var(--color-foreground) 10%, transparent);
+  margin: 2.5rem 0;
+}
+.gist-prose code {
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.875em;
+  background: color-mix(in oklab, var(--color-foreground) 8%, transparent);
+  padding: 0.15em 0.4em;
+  border: 1px solid color-mix(in oklab, var(--color-foreground) 10%, transparent);
+}
+.gist-prose pre {
+  overflow-x: auto;
+  border: 1px solid color-mix(in oklab, var(--color-foreground) 12%, transparent);
+  background: oklch(0.16 0 0);
+  color: oklch(0.95 0 0);
+  padding: 1rem 1.25rem;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+.gist-prose pre code {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  font-size: inherit;
+}
+.gist-prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+.gist-prose th,
+.gist-prose td {
+  border: 1px solid color-mix(in oklab, var(--color-foreground) 12%, transparent);
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+.gist-prose th {
+  background: color-mix(in oklab, var(--color-foreground) 5%, transparent);
+  font-weight: 700;
+}
+.gist-prose img {
+  max-width: 100%;
+  border: 1px solid color-mix(in oklab, var(--color-foreground) 10%, transparent);
+}
