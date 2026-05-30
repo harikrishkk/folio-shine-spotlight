@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/carousel";
 import { Menu, X, ArrowRight, ArrowLeft, Github, Linkedin, Twitter, Sun, Moon } from "lucide-react";
 import { siteConfig } from "@/config/site";
+import { TECH_LOGOS } from "@/components/TechLogos";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -23,11 +24,12 @@ type FormState = {
 
 const initialForm: FormState = { name: "", email: "", query: "" };
 
-const { brand, nav: NAV, banner, marquee: MARQUEE, career, masterclass, testimonials, contact, footer } =
+const { brand, nav: NAV, banner, marquee: MARQUEE, career, masterclass, testimonials, contact, techStack, footer } =
   siteConfig;
 const TIMELINE = career.items;
 const WORKSHOPS = masterclass.modules;
 const TESTIMONIALS = testimonials.items;
+const TECH_NAMES = techStack.logos;
 
 const SOCIAL_ICONS = { github: Github, linkedin: Linkedin, twitter: Twitter };
 
@@ -261,6 +263,33 @@ function Index() {
               >
                 {banner.secondaryCta.label}
               </a>
+            </div>
+
+            {/* TECH STACK LOGOS */}
+            <div className="mt-10 md:mt-14 animate-entrance" style={{ animationDelay: "200ms" }}>
+              <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted mb-4">
+                {techStack.label}
+              </p>
+              <div className="flex flex-wrap items-center gap-5 md:gap-6">
+                {TECH_NAMES.map((name) => {
+                  const logo = TECH_LOGOS[name];
+                  if (!logo) return null;
+                  return (
+                    <div
+                      key={name}
+                      className="group relative flex flex-col items-center gap-1.5 text-foreground/40 hover:text-[var(--color-accent)] transition-colors duration-300"
+                      title={name}
+                    >
+                      <div className="p-2 border border-foreground/10 group-hover:border-[var(--color-accent)]/40 transition-colors duration-300">
+                        {logo}
+                      </div>
+                      <span className="text-[9px] font-bold uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        {name}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
           <div className="grid grid-cols-3 md:grid-cols-1 md:grid-rows-3 divide-x md:divide-x-0 md:divide-y divide-foreground/10">
