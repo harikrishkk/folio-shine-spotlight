@@ -9,6 +9,7 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel";
 import { Menu, X, ArrowRight, ArrowLeft, Github, Linkedin, Twitter, Sun, Moon } from "lucide-react";
+import { siteConfig } from "@/config/site";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -22,97 +23,13 @@ type FormState = {
 
 const initialForm: FormState = { name: "", email: "", query: "" };
 
-const NAV = [
-  { href: "#workshops", label: "WORKSHOPS" },
-  { href: "#timeline", label: "EXPERIENCE" },
-  { href: "#testimonials", label: "PRAISE" },
-  { href: "#contact", label: "CONTACT" },
-];
+const { brand, nav: NAV, banner, marquee: MARQUEE, career, masterclass, testimonials, contact, footer } =
+  siteConfig;
+const TIMELINE = career.items;
+const WORKSHOPS = masterclass.modules;
+const TESTIMONIALS = testimonials.items;
 
-const MARQUEE = [
-  "TYPESCRIPT",
-  "REACTIVE PATTERNS",
-  "NX MONOREPOS",
-  "PERFORMANCE AUDITS",
-  "SSR & HYDRATION",
-  "DESIGN SYSTEMS",
-  "RXJS",
-  "REACT SERVER COMPONENTS",
-];
-
-const TIMELINE = [
-  {
-    period: "2022 — PRESENT",
-    role: "Staff Frontend Engineer @ TechScale",
-    blurb: "Leading core platform rewrite for 500k DAU. Signals-first Angular architecture across 12 squads.",
-    active: true,
-  },
-  {
-    period: "2019 — 2022",
-    role: "Senior UI Lead @ CloudSync",
-    blurb: "Architected a React + React Native design system shared across four product teams.",
-  },
-  {
-    period: "2016 — 2019",
-    role: "JavaScript Trainer @ CodeCraft",
-    blurb: "Designed and delivered on-site Angular & React intensives for Fortune 500 engineering orgs.",
-  },
-  {
-    period: "2013 — 2016",
-    role: "Frontend Engineer @ Peak Agency",
-    blurb: "Shipped interactive data viz and design systems for global enterprise clients.",
-  },
-];
-
-const WORKSHOPS = [
-  {
-    tag: "Level: Advanced",
-    title: "Angular Masterclass",
-    bullets: [
-      "Custom RxJS operators & reactive patterns",
-      "Zone-less signal architecture",
-      "Enterprise schematics & monorepo scaling",
-      "Performance profiling & hydration strategy",
-    ],
-  },
-  {
-    tag: "Level: Expert",
-    title: "React Performance",
-    bullets: [
-      "Concurrent mode internals",
-      "Memory leak forensics in production",
-      "Server Components deep-dive",
-      "Streaming SSR & cache architecture",
-    ],
-  },
-];
-
-const TESTIMONIALS = [
-  {
-    quote:
-      "Hari doesn't just teach code; he teaches systems thinking. Our entire frontend team level-up happened in just three days.",
-    name: "Sarah Chen",
-    role: "CTO, NEXUS LABS",
-  },
-  {
-    quote:
-      "The most intensive Angular training we've ever booked. We refactored architecture debt in real-time during the workshop.",
-    name: "Marcus Thorne",
-    role: "VP ENGINEERING, FINTECH FLOW",
-  },
-  {
-    quote:
-      "A rare blend of high-level architecture and hands-on coding. His React Performance module changed how my team profiles.",
-    name: "Elena Rodriguez",
-    role: "STAFF ENGINEER, GLOBAL LOGISTICS",
-  },
-  {
-    quote:
-      "Hari's RxJS deep-dive single-handedly unblocked our migration. Worth every cent for any team scaling Angular.",
-    name: "Liam Zhao",
-    role: "ENGINEERING MANAGER, DATAFLUX",
-  },
-];
+const SOCIAL_ICONS = { github: Github, linkedin: Linkedin, twitter: Twitter };
 
 function Index() {
   const [open, setOpen] = React.useState(false);
@@ -184,7 +101,7 @@ function Index() {
   };
   const handleHeadlineLeave = () => setCursor(null);
 
-  const headlineLines = ["FRONTEND", "ARCHITECT"];
+  const headlineLines = banner.headlineLines;
 
   React.useEffect(() => {
     if (!api) return;
@@ -202,7 +119,7 @@ function Index() {
       <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-foreground/10">
         <div className="px-6 py-4 flex justify-between items-center">
           <a href="#top" className="font-bold tracking-tighter text-base md:text-lg">
-            HARI.KRISHNAN<span className="text-[var(--color-accent)]">[03]</span>
+            {brand.name}<span className="text-[var(--color-accent)]">{brand.suffix}</span>
           </a>
           <div className="hidden md:flex gap-8 text-sm font-bold">
             {NAV.map((n) => (
@@ -268,7 +185,7 @@ function Index() {
         <section className="grid grid-cols-1 md:grid-cols-4 border-b border-foreground/10">
           <div className="md:col-span-3 border-b md:border-b-0 md:border-r border-foreground/10 p-8 md:p-16 flex flex-col justify-end min-h-[70vh] animate-entrance">
             <p className="text-xs md:text-sm font-bold uppercase tracking-[0.3em] text-[var(--color-accent)] mb-6">
-              [ Hari Krishnan / Frontend JS Lead ]
+              {banner.eyebrow}
             </p>
             <h1
               onMouseMove={handleHeadlineMove}
@@ -289,9 +206,9 @@ function Index() {
                   {li === headlineLines.length - 1 && (
                     <span
                       className="glitch-char text-[var(--color-accent)]"
-                      data-text="."
+                      data-text={banner.headlineAccent}
                     >
-                      .
+                      {banner.headlineAccent}
                     </span>
                   )}
                 </span>
@@ -329,31 +246,25 @@ function Index() {
               ))}
             </div>
             <p className="max-w-xl text-base md:text-lg text-muted leading-relaxed">
-              Leading engineering teams at the intersection of scale and performance. Specializing
-              in high-frequency Angular systems and React design patterns — and training the next
-              generation through intensive, no-fluff workshops.
+              {banner.description}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <a
-                href="#workshops"
+                href={banner.primaryCta.href}
                 className="px-5 py-3 bg-foreground text-background font-bold uppercase tracking-widest text-xs hover:bg-[var(--color-accent)] transition-colors inline-flex items-center gap-2"
               >
-                View Workshops <ArrowRight className="size-4" />
+                {banner.primaryCta.label} <ArrowRight className="size-4" />
               </a>
               <a
-                href="#contact"
+                href={banner.secondaryCta.href}
                 className="px-5 py-3 border border-foreground/20 font-bold uppercase tracking-widest text-xs hover:border-foreground transition-colors"
               >
-                Get in touch
+                {banner.secondaryCta.label}
               </a>
             </div>
           </div>
           <div className="grid grid-cols-3 md:grid-cols-1 md:grid-rows-3 divide-x md:divide-x-0 md:divide-y divide-foreground/10">
-            {[
-              { num: "12+", label: "Years Industry" },
-              { num: "850", label: "Devs Trained" },
-              { num: "40+", label: "Workshops Delivered" },
-            ].map((s, i) => (
+            {banner.stats.map((s, i) => (
               <div
                 key={s.label}
                 className="p-6 md:p-8 flex flex-col justify-center animate-entrance"
@@ -393,7 +304,7 @@ function Index() {
         <section className="grid grid-cols-1 lg:grid-cols-2 lg:divide-x divide-foreground/10">
           <div id="timeline" className="p-8 md:p-12 border-b lg:border-b-0 border-foreground/10">
             <h2 className="text-xs font-bold tracking-[0.3em] uppercase mb-12 text-muted">
-              [ Career Milestones ]
+              {career.sectionLabel}
             </h2>
             <div className="space-y-10 relative">
               <div className="absolute left-[7px] top-2 bottom-2 w-px bg-foreground/10" />
@@ -416,7 +327,7 @@ function Index() {
 
           <div id="workshops" className="p-8 md:p-12 space-y-8">
             <h2 className="text-xs font-bold tracking-[0.3em] uppercase mb-4 text-muted">
-              [ Masterclass Modules ]
+              {masterclass.sectionLabel}
             </h2>
             {WORKSHOPS.map((w) => (
               <div
@@ -440,10 +351,10 @@ function Index() {
                   ))}
                 </ul>
                 <a
-                  href="#contact"
+                  href={masterclass.ctaHref}
                   className="block text-center w-full py-3 md:py-4 bg-foreground text-background font-bold uppercase tracking-widest text-xs md:text-sm hover:bg-[var(--color-accent)] transition-colors"
                 >
-                  Book Curriculum
+                  {masterclass.ctaLabel}
                 </a>
               </div>
             ))}
@@ -456,7 +367,7 @@ function Index() {
           className="border-y border-foreground/10 bg-foreground text-background p-8 md:p-12 overflow-hidden"
         >
           <div className="flex justify-between items-center mb-10 md:mb-12">
-            <h2 className="text-xs font-bold tracking-[0.3em] uppercase">[ Testimonials ]</h2>
+            <h2 className="text-xs font-bold tracking-[0.3em] uppercase">{testimonials.sectionLabel}</h2>
             <div className="flex gap-3">
               <button
                 type="button"
@@ -524,28 +435,32 @@ function Index() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
             <div>
               <h2 className="text-5xl sm:text-6xl md:text-8xl font-extrabold tracking-tighter leading-none mb-12">
-                START THE
+                {contact.headlineTop}
                 <br />
-                PROJECT
+                {contact.headlineBottom}
                 <span className="text-[var(--color-accent)]">.</span>
               </h2>
               <div className="flex flex-col gap-4 text-lg md:text-xl font-bold">
                 <a
-                  href="mailto:hello@harikrishnan.dev"
+                  href={`mailto:${contact.email}`}
                   className="hover:text-[var(--color-accent)] underline underline-offset-8 transition-colors break-all"
                 >
-                  hello@harikrishnan.dev
+                  {contact.email}
                 </a>
                 <div className="flex gap-6 text-sm text-muted mt-6 uppercase tracking-widest font-bold">
-                  <a href="#" aria-label="GitHub" className="hover:text-foreground inline-flex items-center gap-2">
-                    <Github className="size-4" /> GitHub
-                  </a>
-                  <a href="#" aria-label="LinkedIn" className="hover:text-foreground inline-flex items-center gap-2">
-                    <Linkedin className="size-4" /> LinkedIn
-                  </a>
-                  <a href="#" aria-label="Twitter" className="hover:text-foreground inline-flex items-center gap-2">
-                    <Twitter className="size-4" /> Twitter
-                  </a>
+                  {contact.socials.map((s) => {
+                    const Icon = SOCIAL_ICONS[s.icon];
+                    return (
+                      <a
+                        key={s.label}
+                        href={s.href}
+                        aria-label={s.label}
+                        className="hover:text-foreground inline-flex items-center gap-2"
+                      >
+                        <Icon className="size-4" /> {s.label}
+                      </a>
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -555,8 +470,8 @@ function Index() {
                   <div className="size-12 mx-auto mb-4 rounded-full bg-[var(--color-accent)]/20 grid place-items-center text-lg">
                     ✓
                   </div>
-                  <p className="text-xl font-extrabold mb-2">Message received</p>
-                  <p className="text-sm text-muted">I'll get back to you shortly.</p>
+                  <p className="text-xl font-extrabold mb-2">{contact.successTitle}</p>
+                  <p className="text-sm text-muted">{contact.successMessage}</p>
                 </div>
               ) : (
                 <form
@@ -616,8 +531,8 @@ function Index() {
             </div>
           </div>
           <div className="mt-16 md:mt-24 pt-8 border-t border-foreground/10 text-[10px] text-muted flex flex-col sm:flex-row gap-3 justify-between uppercase tracking-widest">
-            <span>© 2026 Hari Krishnan</span>
-            <span>Built with precision</span>
+            <span>{footer.copyright}</span>
+            <span>{footer.tagline}</span>
           </div>
         </footer>
       </main>
