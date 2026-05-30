@@ -252,6 +252,13 @@ function Index() {
                 {n.label}
               </a>
             ))}
+            <Link
+              to="/blogs"
+              onClick={() => setOpen(false)}
+              className="hover:text-[var(--color-accent)]"
+            >
+              BLOGS
+            </Link>
           </div>
         )}
       </nav>
