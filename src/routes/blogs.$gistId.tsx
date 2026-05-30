@@ -41,7 +41,7 @@ function BlogPostPage() {
         </div>
       </nav>
 
-      <main className="px-6 md:px-16 py-16 max-w-3xl mx-auto">
+      <main className="px-6 md:px-16 py-16">
         {isLoading && (
           <p className="font-mono text-sm text-muted-foreground">Loading gist…</p>
         )}
