@@ -1,7 +1,8 @@
 // =====================================================================
-// Courses configuration. Each course has a list of topics. Each topic
-// has a markdown body rendered with syntax highlighting on the right,
-// while the topic list shows on the left as a sidebar.
+// Courses configuration. Each course is a full curriculum with a table
+// of contents (topics) on the left and markdown content on the right.
+// The Angular Masterclass and React Performance courses are linked from
+// the masterclass cards on the homepage.
 // =====================================================================
 
 export type CourseTopic = {
@@ -20,123 +21,182 @@ export type Course = {
 
 export const COURSES: Course[] = [
   {
-    id: "angular-essentials",
-    title: "Angular Essentials",
-    tagline: "From bootstrap to dependency injection — the modern Angular core.",
-    level: "Beginner → Intermediate",
+    id: "angular-masterclass",
+    title: "Angular Masterclass",
+    tagline:
+      "Reactive patterns, signal-first architecture, monorepos, and performance — for senior Angular teams.",
+    level: "Advanced",
     topics: [
       {
-        slug: "intro",
-        title: "Intro",
-        content: `# Welcome to Angular Essentials
+        slug: "overview",
+        title: "Curriculum Overview",
+        content: `# Angular Masterclass — Curriculum
 
-This course walks through the modern Angular runtime — standalone components,
-signals, control flow, and reactive services — without legacy NgModules.
+A four-day intensive for senior Angular engineers. We go beyond syntax into
+the architectural decisions that make large Angular codebases fast,
+reactive, and maintainable.
 
-By the end you will be able to:
+## What you'll learn
 
-- Bootstrap a standalone Angular app
-- Compose components with the new control flow
-- Wire reactive state with signals and RxJS
-- Inject services using the modern \`inject()\` API
+1. **Custom RxJS operators & reactive patterns** — design declarative data
+   flows you can actually maintain.
+2. **Zone-less signal architecture** — wire your app around signals and ditch
+   change-detection guesswork.
+3. **Enterprise schematics & monorepo scaling** — Nx, generators, and module
+   boundaries that survive 20+ squads.
+4. **Performance profiling & hydration strategy** — measure what matters,
+   then fix it with SSR + partial hydration.
+
+## Who it's for
+
+Senior engineers, tech leads, and architects already shipping Angular in
+production who want a step-change in how their team builds.
+
+## Format
+
+On-site or remote. Four full days, hands-on labs, real code from your
+codebase. Cohort capped at 12.
 `,
       },
       {
-        slug: "installation",
-        title: "Installation",
-        content: `# Installation
+        slug: "rxjs-operators",
+        title: "Custom RxJS operators & reactive patterns",
+        content: `# Custom RxJS operators & reactive patterns
 
-Install the Angular CLI globally and scaffold a new workspace:
+RxJS is the substrate of every serious Angular app. This module teaches
+you to **think in streams** — not callbacks dressed up as observables.
 
-\`\`\`bash
-npm install -g @angular/cli
-ng new my-app --standalone --routing --style=css
-cd my-app
-ng serve
-\`\`\`
+## What we cover
 
-Open [http://localhost:4200](http://localhost:4200) to see the app.
-`,
-      },
-      {
-        slug: "bootstrap-flow",
-        title: "Bootstrap flow",
-        content: `# Bootstrap flow
+- Higher-order mapping: \`switchMap\` vs \`mergeMap\` vs \`concatMap\` vs \`exhaustMap\`
+- Multicasting with \`shareReplay\`, \`connectable\`, and ref-counting pitfalls
+- Building **your own operators** with \`pipe()\` and the \`OperatorFunction<T,R>\` contract
+- State machines on top of \`scan\`
+- Cancellation, retries, and backoff that actually work
 
-Modern Angular skips \`NgModule\` and boots a standalone root component.
+## Example: a typed retry-with-backoff operator
 
 \`\`\`ts
-import { bootstrapApplication } from '@angular/platform-browser';
-import { provideRouter } from '@angular/router';
-import { AppComponent } from './app/app.component';
-import { routes } from './app/app.routes';
+import { Observable, timer, throwError } from 'rxjs';
+import { retry } from 'rxjs/operators';
 
-bootstrapApplication(AppComponent, {
-  providers: [provideRouter(routes)],
-});
+export function retryWithBackoff<T>(maxRetries = 3, base = 500) {
+  return (source: Observable<T>) =>
+    source.pipe(
+      retry({
+        count: maxRetries,
+        delay: (_err, attempt) => timer(base * 2 ** attempt),
+      }),
+    );
+}
 \`\`\`
+
+By the end of this module you can refactor a tangled \`subscribe\`-heavy
+service into a single declarative pipeline.
 `,
       },
       {
-        slug: "dependency-injection",
-        title: "Dependency injection",
-        content: `# Dependency Injection and services
+        slug: "signals",
+        title: "Zone-less signal architecture",
+        content: `# Zone-less signal architecture
 
-If we need another option with observable and subscribe, here is another
-example with signal & observable.
+Signals are the biggest shift in Angular since standalone components.
+We rebuild a feature from scratch — no \`zone.js\`, no manual change
+detection — using signals end-to-end.
 
-## Signal + Observable example
+## What we cover
+
+- The signal primitive: \`signal\`, \`computed\`, \`effect\`
+- Interop with RxJS via \`toSignal\` and \`toObservable\`
+- \`provideExperimentalZonelessChangeDetection()\` and what it actually changes
+- Designing components and services around signal graphs
+- Migration playbook for an existing zone-based codebase
+
+## Example
 
 \`\`\`ts
-// service
-getAllUsers(): Observable<User[]> {
-  return this.http.get<User[]>('https://reqres.in/api/users').pipe(
-    catchError((error) => {
-      return of(error);
-    }),
-    map((res: any) => res.data)
+import { Component, computed, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { UsersService } from './users.service';
+
+@Component({
+  selector: 'app-users',
+  standalone: true,
+  template: \`
+    <input (input)="query.set($any($event.target).value)" />
+    @for (u of filtered(); track u.id) { <p>{{ u.name }}</p> }
+  \`,
+})
+export class UsersComponent {
+  private users = toSignal(inject(UsersService).all$, { initialValue: [] });
+  query = signal('');
+  filtered = computed(() =>
+    this.users().filter(u => u.name.includes(this.query())),
   );
 }
 \`\`\`
-
-and in component
-
-\`\`\`ts
-import { Component, inject, signal } from '@angular/core';
-import { User, UsersService } from './users.service';
-import { toSignal } from '@angular/core/rxjs-interop';
-
-@Component({
-  selector: 'app-content',
-  standalone: true,
-  template: \`
-    @for (user of users(); track user.id) {
-      <p>{{ user.first_name }}</p>
-    }
-  \`,
-})
-export class ContentComponent {
-  private usersService = inject(UsersService);
-  users = toSignal(this.usersService.getAllUsers(), { initialValue: [] });
-}
-\`\`\`
 `,
       },
       {
-        slug: "rxjs",
-        title: "RxJS",
-        content: `# RxJS
+        slug: "monorepo",
+        title: "Enterprise schematics & monorepo scaling",
+        content: `# Enterprise schematics & monorepo scaling
 
-Angular leans on RxJS for async streams. The most common operators you'll
-reach for are \`map\`, \`switchMap\`, \`catchError\`, and \`combineLatest\`.
+Once you cross ~5 squads, ad-hoc folder structures stop working. This
+module teaches the architectural patterns that scale Angular to dozens of
+teams sharing one repo.
 
-\`\`\`ts
-import { combineLatest, map } from 'rxjs';
+## What we cover
 
-const total$ = combineLatest([price$, qty$]).pipe(
-  map(([price, qty]) => price * qty),
-);
+- Nx workspace layout: \`apps/\`, \`libs/\`, scope and type tags
+- Enforcing module boundaries with \`@nx/enforce-module-boundaries\`
+- Custom **schematics** and **generators** for your team's conventions
+- Affected graphs, distributed task execution, and CI partitioning
+- Versioning and publishing internal libraries
+
+## Example tags
+
+\`\`\`json
+{
+  "scope:checkout": ["libs/checkout/**"],
+  "scope:shared":   ["libs/shared/**"],
+  "type:feature":   ["**/feature-*/**"],
+  "type:ui":        ["**/ui-*/**"]
+}
 \`\`\`
+
+You leave with a generator your team can run on day one.
+`,
+      },
+      {
+        slug: "performance",
+        title: "Performance profiling & hydration strategy",
+        content: `# Performance profiling & hydration strategy
+
+The difference between a fast Angular app and a slow one is rarely the
+framework — it's the architecture. We profile a real app and remove the
+top three bottlenecks live.
+
+## What we cover
+
+- Reading Chrome DevTools performance traces (long tasks, layout thrash)
+- The Angular DevTools profiler: change detection cost per component
+- SSR + **partial hydration** with \`@defer\` blocks and route-level hydration
+- Image, font, and bundle budgets that hold the line
+- Real-user monitoring: Core Web Vitals you can act on
+
+## Example: deferring a heavy block
+
+\`\`\`html
+@defer (on viewport) {
+  <heavy-chart [data]="data()" />
+} @placeholder {
+  <skeleton-chart />
+}
+\`\`\`
+
+Outcome: hydration cost drops, TTI improves, and you have a measurable
+budget per route.
 `,
       },
     ],
@@ -144,47 +204,163 @@ const total$ = combineLatest([price$, qty$]).pipe(
   {
     id: "react-performance",
     title: "React Performance",
-    tagline: "Profiling, memoization, Suspense, and Server Components.",
-    level: "Advanced",
+    tagline:
+      "Concurrent mode, memory forensics, RSC, and streaming SSR — for teams scaling React in production.",
+    level: "Expert",
     topics: [
       {
-        slug: "intro",
-        title: "Intro",
-        content: `# React Performance
+        slug: "overview",
+        title: "Curriculum Overview",
+        content: `# React Performance — Curriculum
 
-A deep dive into making React apps feel instant — from render profiling to
-streaming server components.
+A three-day deep-dive into how React 18+ actually renders, schedules, and
+streams — and what that means for the apps you ship.
+
+## What you'll learn
+
+1. **Concurrent mode internals** — fibers, lanes, and how \`startTransition\`
+   really works.
+2. **Memory leak forensics in production** — track down the leaks your
+   monitoring can't see.
+3. **Server Components deep-dive** — what they are, what they're not, and
+   how to migrate without breaking your team.
+4. **Streaming SSR & cache architecture** — \`renderToPipeableStream\`,
+   Suspense boundaries, and edge caching that scales.
+
+## Who it's for
+
+Senior React engineers who already know hooks, context, and Suspense, and
+want to understand the runtime well enough to debug it.
+
+## Format
+
+Three days, ~50% live coding on a real app. Cohort capped at 12.
 `,
       },
       {
-        slug: "profiling",
-        title: "Profiling",
-        content: `# Profiling
+        slug: "concurrent-mode",
+        title: "Concurrent mode internals",
+        content: `# Concurrent mode internals
 
-Use the React DevTools Profiler to record interactions and inspect commits.
+React 18 didn't just add new APIs — it rewrote the scheduler. We open the
+hood and trace a render from \`setState\` to commit.
+
+## What we cover
+
+- The fiber tree and the two-pass render/commit model
+- Lanes, priorities, and \`startTransition\`
+- \`useDeferredValue\` vs \`useTransition\` — when to use which
+- Tearing, \`useSyncExternalStore\`, and external state libraries
+- Reading React DevTools' "Why did this render?" output
+
+## Example
 
 \`\`\`tsx
-import { Profiler } from 'react';
+import { startTransition, useState } from 'react';
 
-<Profiler id="Dashboard" onRender={(id, phase, duration) => {
-  console.log(id, phase, duration);
-}}>
-  <Dashboard />
-</Profiler>
+export function Search({ items }: { items: string[] }) {
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState(items);
+
+  function onChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setQuery(e.target.value);
+    startTransition(() => {
+      setResults(items.filter(i => i.includes(e.target.value)));
+    });
+  }
+
+  return <input value={query} onChange={onChange} />;
+}
 \`\`\`
 `,
       },
       {
-        slug: "memoization",
-        title: "Memoization",
-        content: `# Memoization
+        slug: "memory-leaks",
+        title: "Memory leak forensics in production",
+        content: `# Memory leak forensics in production
 
-\`useMemo\` and \`useCallback\` are not free — they trade GC pressure for
-referential stability. Reach for them only when a child is memoized.
+Memory leaks in React rarely come from React itself — they come from
+subscriptions, closures, and detached DOM nodes. We hunt them down.
+
+## What we cover
+
+- Chrome DevTools heap snapshots and the **3-snapshot technique**
+- Common offenders: stale event listeners, \`useEffect\` cleanups, observers
+- Detached DOM nodes and what keeps them alive
+- Production monitoring with \`performance.memory\` and PerformanceObserver
+- Writing a leak-regression test
+
+## Example: a leak that hides in plain sight
 
 \`\`\`tsx
-const value = useMemo(() => heavy(input), [input]);
+useEffect(() => {
+  const onResize = () => setSize(window.innerWidth);
+  window.addEventListener('resize', onResize);
+  // forgot the cleanup → every navigation away leaks a listener
+}, []);
 \`\`\`
+
+You leave with a checklist your team can run before every release.
+`,
+      },
+      {
+        slug: "server-components",
+        title: "Server Components deep-dive",
+        content: `# Server Components deep-dive
+
+RSC isn't "SSR 2.0" — it's a different programming model. We cover what
+RSC actually is, what it gives you, and what it takes away.
+
+## What we cover
+
+- The mental model: server vs client component boundaries
+- The \`"use client"\` directive and where it actually matters
+- Streaming RSC payloads and Suspense at the boundary
+- Data fetching: \`async\` components, request deduplication, caching layers
+- Migration: how to introduce RSC into an existing CSR app without a rewrite
+
+## Example
+
+\`\`\`tsx
+// app/posts/page.tsx — server component
+import { db } from '@/lib/db';
+import { PostList } from './post-list'; // "use client"
+
+export default async function PostsPage() {
+  const posts = await db.post.findMany();
+  return <PostList initialPosts={posts} />;
+}
+\`\`\`
+`,
+      },
+      {
+        slug: "streaming-ssr",
+        title: "Streaming SSR & cache architecture",
+        content: `# Streaming SSR & cache architecture
+
+Streaming SSR turns "blank screen until everything is ready" into
+"meaningful pixels in 200ms." We wire it up end-to-end.
+
+## What we cover
+
+- \`renderToPipeableStream\` vs \`renderToReadableStream\`
+- Suspense boundaries as **stream chunks**
+- HTTP caching: \`Cache-Control\`, \`stale-while-revalidate\`, edge caches
+- Per-route ISR and on-demand revalidation
+- Observability: TTFB, FCP, LCP — what to alert on
+
+## Example
+
+\`\`\`tsx
+import { renderToPipeableStream } from 'react-dom/server';
+
+const { pipe } = renderToPipeableStream(<App />, {
+  bootstrapScripts: ['/main.js'],
+  onShellReady() { pipe(res); },
+});
+\`\`\`
+
+Outcome: a measurable improvement in real-user LCP on day one.
 `,
       },
     ],
