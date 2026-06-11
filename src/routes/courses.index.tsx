@@ -5,17 +5,23 @@ import { COURSES } from "@/config/courses";
 export const Route = createFileRoute("/courses/")({
   head: () => ({
     meta: [
-      { title: "Courses — Hari Krishnan" },
+      { title: "Angular & React Courses — Hari Krishnan" },
       {
         name: "description",
         content:
-          "Self-paced courses on frontend architecture, Angular, and React — with code samples and deep dives.",
+          "Advanced Angular and React courses for senior engineers. Reactive patterns, signals, monorepos, React performance and SSR — taught by Hari Krishnan.",
       },
-      { property: "og:title", content: "Courses — Hari Krishnan" },
+      { property: "og:title", content: "Angular & React Courses — Hari Krishnan" },
       {
         property: "og:description",
-        content: "Self-paced courses on Angular, React, and frontend architecture.",
+        content:
+          "Advanced Angular and React courses for senior engineers, taught by Hari Krishnan.",
       },
+      { property: "og:url", content: "/courses" },
+      { property: "og:type", content: "website" },
+    ],
+    links: [
+      { rel: "canonical", href: "/courses" },
     ],
   }),
   component: CoursesIndex,

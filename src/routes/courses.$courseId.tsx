@@ -25,10 +25,39 @@ export const Route = createFileRoute("/courses/$courseId")({
   head: ({ loaderData }) => ({
     meta: loaderData
       ? [
-          { title: `${loaderData.course.title} — Courses` },
+          { title: `${loaderData.course.title} — Course & Workshop | Hari Krishnan` },
           { name: "description", content: loaderData.course.tagline },
-          { property: "og:title", content: `${loaderData.course.title} — Courses` },
+          { property: "og:title", content: `${loaderData.course.title} — Course & Workshop` },
           { property: "og:description", content: loaderData.course.tagline },
+          { property: "og:type", content: "article" },
+          { property: "og:url", content: `/courses/${loaderData.course.id}` },
+        ]
+      : [],
+    links: loaderData
+      ? [{ rel: "canonical", href: `/courses/${loaderData.course.id}` }]
+      : [],
+    scripts: loaderData
+      ? [
+          {
+            type: "application/ld+json",
+            children: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Course",
+              name: loaderData.course.title,
+              description: loaderData.course.tagline,
+              educationalLevel: loaderData.course.level,
+              numberOfCredits: loaderData.course.topics.length,
+              provider: {
+                "@type": "Person",
+                name: "Hari Krishnan",
+              },
+              hasCourseInstance: {
+                "@type": "CourseInstance",
+                courseMode: "Onsite",
+                instructor: { "@type": "Person", name: "Hari Krishnan" },
+              },
+            }),
+          },
         ]
       : [],
   }),
