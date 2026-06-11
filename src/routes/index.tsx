@@ -412,7 +412,19 @@ function Index() {
                         .join("")}
                     </div>
                     <div>
-                      <p className="font-bold">{t.name.toUpperCase()}</p>
+                      {t.href ? (
+                        <a
+                          href={t.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-bold hover:text-[var(--color-accent)] transition-colors inline-flex items-center gap-2"
+                        >
+                          {t.name.toUpperCase()}
+                          <Linkedin className="size-3.5" />
+                        </a>
+                      ) : (
+                        <p className="font-bold">{t.name.toUpperCase()}</p>
+                      )}
                       <p className="text-xs text-background/50">{t.role}</p>
                     </div>
                   </div>
