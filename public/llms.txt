@@ -1,0 +1,12 @@
+# Hari Krishnan
+
+> Frontend architect and trainer running advanced Angular and React workshops and corporate training for engineering teams.
+
+Hari Krishnan is a frontend JavaScript lead with 12+ years of industry experience, specializing in enterprise Angular and React architecture, RxJS, signals, monorepos, SSR, and web performance. He delivers intensive masterclasses for senior engineering teams.
+
+## Pages
+
+- [Home](/): Overview, experience timeline, workshops, testimonials, and contact.
+- [Courses](/courses): Catalog of advanced Angular and React courses.
+- [Angular Masterclass](/courses/angular-masterclass): Reactive patterns, signal-first architecture, Nx monorepos, and performance for senior Angular teams.
+- [React Performance](/courses/react-performance): Concurrent mode internals, memory leak forensics, Server Components, and streaming SSR.
