@@ -12,7 +12,12 @@ export type TimelineEntry = {
   blurb: string;
   active?: boolean;
 };
-export type Workshop = { tag: string; title: string; bullets: string[] };
+export type Workshop = {
+  tag: string;
+  title: string;
+  bullets: string[];
+  courseId?: string;
+};
 export type Testimonial = { quote: string; name: string; role: string };
 export type SocialLink = { label: string; href: string; icon: "github" | "linkedin" | "twitter" };
 
@@ -137,6 +142,7 @@ export const siteConfig: SiteConfig = {
       {
         tag: "Level: Advanced",
         title: "Angular Masterclass",
+        courseId: "angular-masterclass",
         bullets: [
           "Custom RxJS operators & reactive patterns",
           "Zone-less signal architecture",
@@ -147,6 +153,7 @@ export const siteConfig: SiteConfig = {
       {
         tag: "Level: Expert",
         title: "React Performance",
+        courseId: "react-performance",
         bullets: [
           "Concurrent mode internals",
           "Memory leak forensics in production",
