@@ -352,23 +352,54 @@ function Index() {
                     <span className="text-[10px] bg-[var(--color-accent)]/10 text-[var(--color-accent)] px-2 py-1 font-bold rounded uppercase tracking-tight">
                       {w.tag}
                     </span>
-                    <h3 className="text-xl md:text-2xl font-extrabold mt-3">{w.title}</h3>
+                    {w.courseId ? (
+                      <Link
+                        to="/courses/$courseId"
+                        params={{ courseId: w.courseId }}
+                        className="block mt-3 hover:text-[var(--color-accent)] transition-colors"
+                      >
+                        <h3 className="text-xl md:text-2xl font-extrabold">{w.title}</h3>
+                      </Link>
+                    ) : (
+                      <h3 className="text-xl md:text-2xl font-extrabold mt-3">{w.title}</h3>
+                    )}
                   </div>
-                  <div className="size-12 grid place-items-center border border-foreground/10 group-hover:bg-[var(--color-accent)] group-hover:text-white group-hover:border-[var(--color-accent)] transition-colors shrink-0">
-                    <ArrowRight className="size-4" />
-                  </div>
+                  {w.courseId ? (
+                    <Link
+                      to="/courses/$courseId"
+                      params={{ courseId: w.courseId }}
+                      aria-label={`View ${w.title} curriculum`}
+                      className="size-12 grid place-items-center border border-foreground/10 group-hover:bg-[var(--color-accent)] group-hover:text-white group-hover:border-[var(--color-accent)] transition-colors shrink-0"
+                    >
+                      <ArrowRight className="size-4" />
+                    </Link>
+                  ) : (
+                    <div className="size-12 grid place-items-center border border-foreground/10 group-hover:bg-[var(--color-accent)] group-hover:text-white group-hover:border-[var(--color-accent)] transition-colors shrink-0">
+                      <ArrowRight className="size-4" />
+                    </div>
+                  )}
                 </div>
                 <ul className="text-sm space-y-2 text-muted mb-8">
                   {w.bullets.map((b) => (
                     <li key={b}>• {b}</li>
                   ))}
                 </ul>
-                <a
-                  href={masterclass.ctaHref}
-                  className="block text-center w-full py-3 md:py-4 bg-foreground text-background font-bold uppercase tracking-widest text-xs md:text-sm hover:bg-[var(--color-accent)] transition-colors"
-                >
-                  {masterclass.ctaLabel}
-                </a>
+                {w.courseId ? (
+                  <Link
+                    to="/courses/$courseId"
+                    params={{ courseId: w.courseId }}
+                    className="block text-center w-full py-3 md:py-4 bg-foreground text-background font-bold uppercase tracking-widest text-xs md:text-sm hover:bg-[var(--color-accent)] transition-colors"
+                  >
+                    View Full Curriculum
+                  </Link>
+                ) : (
+                  <a
+                    href={masterclass.ctaHref}
+                    className="block text-center w-full py-3 md:py-4 bg-foreground text-background font-bold uppercase tracking-widest text-xs md:text-sm hover:bg-[var(--color-accent)] transition-colors"
+                  >
+                    {masterclass.ctaLabel}
+                  </a>
+                )}
               </div>
             ))}
           </div>
