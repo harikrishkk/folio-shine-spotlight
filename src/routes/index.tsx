@@ -449,37 +449,30 @@ function Index() {
 
         {/* CONTACT */}
         <footer id="contact" className="p-8 md:p-24 bg-background border-t border-foreground/10">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
-            <div>
-              <h2 className="text-5xl sm:text-6xl md:text-8xl font-extrabold tracking-tighter leading-none mb-12">
-                {contact.headlineTop}
-                <br />
-                {contact.headlineBottom}
-                <span className="text-[var(--color-accent)]">.</span>
-              </h2>
-              <div className="flex flex-col gap-4 text-lg md:text-xl font-bold">
-                <a
-                  href={`mailto:${contact.email}`}
-                  className="hover:text-[var(--color-accent)] underline underline-offset-8 transition-colors break-all"
-                >
-                  {contact.email}
-                </a>
-                <div className="flex gap-6 text-sm text-muted mt-6 uppercase tracking-widest font-bold">
-                  {contact.socials.map((s) => {
-                    const Icon = SOCIAL_ICONS[s.icon];
-                    return (
-                      <a
-                        key={s.label}
-                        href={s.href}
-                        aria-label={s.label}
-                        className="hover:text-foreground inline-flex items-center gap-2"
-                      >
-                        <Icon className="size-4" /> {s.label}
-                      </a>
-                    );
-                  })}
-                </div>
-              </div>
+          <h2 className="text-xs font-bold tracking-[0.3em] uppercase mb-8 text-muted">
+            [ Connect ]
+          </h2>
+          <div className="flex flex-col gap-6">
+            <a
+              href={`mailto:${contact.email}`}
+              className="text-2xl md:text-3xl font-extrabold tracking-tight hover:text-[var(--color-accent)] underline underline-offset-8 transition-colors break-all w-fit"
+            >
+              {contact.email}
+            </a>
+            <div className="flex gap-6 text-sm text-muted uppercase tracking-widest font-bold">
+              {contact.socials.map((s) => {
+                const Icon = SOCIAL_ICONS[s.icon];
+                return (
+                  <a
+                    key={s.label}
+                    href={s.href}
+                    aria-label={s.label}
+                    className="hover:text-foreground inline-flex items-center gap-2"
+                  >
+                    <Icon className="size-4" /> {s.label}
+                  </a>
+                );
+              })}
             </div>
           </div>
           <div className="mt-16 md:mt-24 pt-8 border-t border-foreground/10 text-[10px] text-muted flex flex-col sm:flex-row gap-3 justify-between uppercase tracking-widest">
