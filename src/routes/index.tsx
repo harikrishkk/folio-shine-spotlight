@@ -8,20 +8,12 @@ import {
   CarouselItem,
   type CarouselApi,
 } from "@/components/ui/carousel";
-import { Menu, X, ArrowRight, ArrowLeft, Github, Linkedin, Twitter, Sun, Moon } from "lucide-react";
+import { Menu, X, ArrowRight, ArrowLeft, Github, Linkedin, Sun, Moon } from "lucide-react";
 import { siteConfig } from "@/config/site";
 
 export const Route = createFileRoute("/")({
   component: Index,
 });
-
-type FormState = {
-  name: string;
-  email: string;
-  query: string;
-};
-
-const initialForm: FormState = { name: "", email: "", query: "" };
 
 const { brand, nav: NAV, banner, marquee: MARQUEE, career, masterclass, testimonials, contact, footer } =
   siteConfig;
@@ -29,7 +21,7 @@ const TIMELINE = career.items;
 const WORKSHOPS = masterclass.modules;
 const TESTIMONIALS = testimonials.items;
 
-const SOCIAL_ICONS = { github: Github, linkedin: Linkedin, twitter: Twitter };
+const SOCIAL_ICONS = { github: Github, linkedin: Linkedin };
 
 function Index() {
   const [open, setOpen] = React.useState(false);
@@ -59,25 +51,6 @@ function Index() {
   >([]);
   const [cursor, setCursor] = React.useState<{ x: number; y: number } | null>(null);
   const sparkId = React.useRef(0);
-
-  // Contact form state
-  const [form, setForm] = React.useState<FormState>(initialForm);
-  const [submitted, setSubmitted] = React.useState(false);
-
-  const handleFormChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
-      setForm(initialForm);
-    }, 3000);
-  };
 
   const handleHeadlineMove = (e: React.MouseEvent) => {
     const x = e.clientX;

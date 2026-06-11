@@ -199,7 +199,6 @@ export const siteConfig: SiteConfig = {
     socials: [
       { label: "GitHub", href: "#", icon: "github" },
       { label: "LinkedIn", href: "#", icon: "linkedin" },
-      { label: "Twitter", href: "#", icon: "twitter" },
     ],
     successTitle: "Message received",
     successMessage: "I'll get back to you shortly.",
