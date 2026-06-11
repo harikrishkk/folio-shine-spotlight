@@ -72,11 +72,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Hari Krishnan — Angular & React Courses, Workshops & Training" },
+      { title: "Hari Krishnan — Angular & React Workshops" },
       {
         name: "description",
         content:
-          "Advanced Angular and React courses, workshops and corporate training led by Hari Krishnan — frontend architect with 12+ years training engineering teams in RxJS, signals, performance, and SSR.",
+          "Advanced Angular and React workshops and corporate training led by Hari Krishnan — frontend architect specializing in RxJS, signals, and performance.",
       },
       {
         name: "keywords",
@@ -85,11 +85,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { name: "author", content: "Hari Krishnan" },
       { property: "og:site_name", content: "Hari Krishnan" },
-      { property: "og:title", content: "Hari Krishnan — Angular & React Courses, Workshops & Training" },
+      { property: "og:title", content: "Hari Krishnan — Angular & React Workshops" },
       {
         property: "og:description",
         content:
-          "Advanced Angular and React courses, workshops and corporate training led by Hari Krishnan — frontend architect with 12+ years training engineering teams.",
+          "Advanced Angular and React workshops and corporate training led by Hari Krishnan — frontend architect specializing in RxJS, signals, and performance.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
