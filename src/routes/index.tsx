@@ -139,6 +139,12 @@ function Index() {
             >
               BLOGS
             </Link>
+            <Link
+              to="/courses"
+              className="hover:text-[var(--color-accent)] transition-colors"
+            >
+              COURSES
+            </Link>
           </div>
           <div className="flex items-center gap-2">
             <button
@@ -177,6 +183,13 @@ function Index() {
               className="hover:text-[var(--color-accent)]"
             >
               BLOGS
+            </Link>
+            <Link
+              to="/courses"
+              onClick={() => setOpen(false)}
+              className="hover:text-[var(--color-accent)]"
+            >
+              COURSES
             </Link>
           </div>
         )}
