@@ -4,7 +4,7 @@ import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
 import { ArrowLeft } from "lucide-react";
 import { z } from "zod";
-import { COURSES } from "@/config/courses";
+import { COURSES, type CourseTopic } from "@/config/courses";
 import "highlight.js/styles/github-dark.css";
 
 const searchSchema = z.object({
@@ -46,8 +46,10 @@ function CoursePage() {
   const { topic } = Route.useSearch();
   const navigate = useNavigate({ from: Route.fullPath });
 
-  const activeSlug = topic ?? course.topics[0]?.slug;
-  const active = course.topics.find((t) => t.slug === activeSlug) ?? course.topics[0];
+  const topics = course.topics as CourseTopic[];
+  const activeSlug = topic ?? topics[0]?.slug;
+  const active =
+    topics.find((t: CourseTopic) => t.slug === activeSlug) ?? topics[0];
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -76,7 +78,7 @@ function CoursePage() {
               {course.title}
             </h2>
             <ul className="flex flex-col">
-              {course.topics.map((t) => {
+              {topics.map((t: CourseTopic) => {
                 const isActive = t.slug === active?.slug;
                 return (
                   <li key={t.slug}>
@@ -84,7 +86,10 @@ function CoursePage() {
                       type="button"
                       onClick={() =>
                         navigate({
-                          search: (prev) => ({ ...prev, topic: t.slug }),
+                          search: (prev: { topic?: string }) => ({
+                            ...prev,
+                            topic: t.slug,
+                          }),
                           replace: true,
                         })
                       }
