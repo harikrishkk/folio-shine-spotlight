@@ -105,12 +105,6 @@ function Index() {
               </a>
             ))}
             <Link
-              to="/blogs"
-              className="hover:text-[var(--color-accent)] transition-colors"
-            >
-              BLOGS
-            </Link>
-            <Link
               to="/courses"
               className="hover:text-[var(--color-accent)] transition-colors"
             >
@@ -148,13 +142,6 @@ function Index() {
                 {n.label}
               </a>
             ))}
-            <Link
-              to="/blogs"
-              onClick={() => setOpen(false)}
-              className="hover:text-[var(--color-accent)]"
-            >
-              BLOGS
-            </Link>
             <Link
               to="/courses"
               onClick={() => setOpen(false)}
