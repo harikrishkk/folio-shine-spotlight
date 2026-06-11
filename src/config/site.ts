@@ -19,7 +19,7 @@ export type Workshop = {
   courseId?: string;
 };
 export type Testimonial = { quote: string; name: string; role: string };
-export type SocialLink = { label: string; href: string; icon: "github" | "linkedin" | "twitter" };
+export type SocialLink = { label: string; href: string; icon: "github" | "linkedin" };
 
 export type SiteConfig = {
   brand: {
