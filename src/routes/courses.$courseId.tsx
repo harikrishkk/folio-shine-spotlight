@@ -1,18 +1,22 @@
-import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import rehypeHighlight from "rehype-highlight";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
-import { z } from "zod";
 import { COURSES, type CourseTopic } from "@/config/courses";
-import "highlight.js/styles/github-dark.css";
 
-const searchSchema = z.object({
-  topic: z.string().optional(),
-});
+function getSummary(markdown: string): string {
+  // Strip code fences, headings, list bullets, then take first non-empty paragraph.
+  const cleaned = markdown
+    .replace(/```[\s\S]*?```/g, "")
+    .split("\n")
+    .map((l) => l.trim())
+    .filter((l) => l && !l.startsWith("#"))
+    .join(" ")
+    .replace(/[*_`]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+  return cleaned.length > 220 ? cleaned.slice(0, 217) + "…" : cleaned;
+}
 
 export const Route = createFileRoute("/courses/$courseId")({
-  validateSearch: searchSchema,
   loader: ({ params }) => {
     const course = COURSES.find((c) => c.id === params.courseId);
     if (!course) throw notFound();
@@ -43,13 +47,7 @@ export const Route = createFileRoute("/courses/$courseId")({
 
 function CoursePage() {
   const { course } = Route.useLoaderData();
-  const { topic } = Route.useSearch();
-  const navigate = useNavigate({ from: Route.fullPath });
-
   const topics = course.topics as CourseTopic[];
-  const activeSlug = topic ?? topics[0]?.slug;
-  const active =
-    topics.find((t: CourseTopic) => t.slug === activeSlug) ?? topics[0];
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -67,62 +65,38 @@ function CoursePage() {
         </div>
       </nav>
 
-      <div className="flex flex-col md:flex-row min-h-[calc(100vh-65px)]">
-        {/* Sidebar */}
-        <aside className="md:w-72 md:shrink-0 border-b md:border-b-0 md:border-r border-foreground/10 md:sticky md:top-[65px] md:self-start md:max-h-[calc(100vh-65px)] md:overflow-y-auto">
-          <div className="px-6 py-8">
-            <p className="text-xs font-bold tracking-[0.3em] text-[var(--color-accent)] mb-3">
-              [ COURSE ]
-            </p>
-            <h2 className="text-xl font-extrabold tracking-tight leading-tight mb-6">
-              {course.title}
-            </h2>
-            <ul className="flex flex-col">
-              {topics.map((t: CourseTopic) => {
-                const isActive = t.slug === active?.slug;
-                return (
-                  <li key={t.slug}>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        navigate({
-                          search: (prev: { topic?: string }) => ({
-                            ...prev,
-                            topic: t.slug,
-                          }),
-                          replace: true,
-                        })
-                      }
-                      className={
-                        "w-full text-left px-3 py-2 text-sm font-medium border-l-2 transition-colors " +
-                        (isActive
-                          ? "border-[var(--color-accent)] text-[var(--color-accent)] bg-foreground/5"
-                          : "border-transparent text-muted-foreground hover:text-foreground hover:border-foreground/30")
-                      }
-                    >
-                      {t.title}
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        </aside>
+      <main className="px-6 md:px-12 py-16 max-w-3xl mx-auto">
+        <p className="text-xs font-bold tracking-[0.3em] text-[var(--color-accent)] mb-3">
+          [ COURSE ]
+        </p>
+        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.05] mb-4">
+          {course.title}
+        </h1>
+        <p className="text-base text-muted-foreground mb-12 max-w-2xl">
+          {course.tagline}
+        </p>
 
-        {/* Content */}
-        <main className="flex-1 min-w-0 px-6 md:px-12 py-12">
-          {active && (
-            <article className="gist-prose max-w-3xl">
-              <ReactMarkdown
-                remarkPlugins={[remarkGfm]}
-                rehypePlugins={[rehypeHighlight]}
-              >
-                {active.content}
-              </ReactMarkdown>
-            </article>
-          )}
-        </main>
-      </div>
+        <h2 className="text-xs font-bold tracking-[0.3em] text-muted-foreground mb-6">
+          [ CURRICULUM ]
+        </h2>
+        <ol className="flex flex-col divide-y divide-foreground/10 border-y border-foreground/10">
+          {topics.map((t: CourseTopic, i: number) => (
+            <li key={t.slug} className="py-6 flex gap-6">
+              <span className="font-mono text-sm text-[var(--color-accent)] pt-1 shrink-0 w-8">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <div className="min-w-0">
+                <h3 className="text-lg font-bold tracking-tight mb-2">
+                  {t.title}
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {getSummary(t.content)}
+                </p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </main>
     </div>
   );
 }
