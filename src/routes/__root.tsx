@@ -72,22 +72,27 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Hari Krishnan — Frontend JS Lead & Workshop Trainer" },
+      { title: "Hari Krishnan — Angular & React Courses, Workshops & Training" },
       {
         name: "description",
         content:
-          "Hari Krishnan: Frontend JavaScript Lead and trainer running advanced Angular and React workshops for engineering teams.",
+          "Advanced Angular and React courses, workshops and corporate training led by Hari Krishnan — frontend architect with 12+ years training engineering teams in RxJS, signals, performance, and SSR.",
+      },
+      {
+        name: "keywords",
+        content:
+          "Angular course, React course, Angular workshop, React workshop, frontend training, JavaScript trainer, RxJS, signals, React performance, frontend architect",
       },
       { name: "author", content: "Hari Krishnan" },
-      { property: "og:title", content: "Hari Krishnan — Frontend JS Lead & Workshop Trainer" },
+      { property: "og:site_name", content: "Hari Krishnan" },
+      { property: "og:title", content: "Hari Krishnan — Angular & React Courses, Workshops & Training" },
       {
         property: "og:description",
         content:
-          "Frontend Architect specializing in enterprise Angular and React. Workshops, consulting, and engineering leadership.",
+          "Advanced Angular and React courses, workshops and corporate training led by Hari Krishnan — frontend architect with 12+ years training engineering teams.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
@@ -97,6 +102,33 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap",
+      },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Person",
+          name: "Hari Krishnan",
+          jobTitle: "Frontend Architect & JavaScript Trainer",
+          description:
+            "Frontend architect and trainer running advanced Angular and React courses and workshops for engineering teams.",
+          knowsAbout: [
+            "Angular",
+            "React",
+            "RxJS",
+            "TypeScript",
+            "Frontend Architecture",
+            "Web Performance",
+            "Server-Side Rendering",
+            "Nx Monorepos",
+          ],
+          makesOffer: [
+            { "@type": "Offer", itemOffered: { "@type": "Course", name: "Angular Masterclass" } },
+            { "@type": "Offer", itemOffered: { "@type": "Course", name: "React Performance" } },
+          ],
+        }),
       },
     ],
   }),
