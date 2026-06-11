@@ -18,7 +18,7 @@ export type Workshop = {
   bullets: string[];
   courseId?: string;
 };
-export type Testimonial = { quote: string; name: string; role: string };
+export type Testimonial = { quote: string; name: string; role: string; href?: string };
 export type SocialLink = { label: string; href: string; icon: "github" | "linkedin" };
 
 export type SiteConfig = {
