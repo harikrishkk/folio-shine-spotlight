@@ -29,7 +29,7 @@ function BlogLanding() {
   const totalLessons = BLOG.reduce((n, c) => n + c.lessons.length, 0);
 
   return (
-    <div className="max-w-4xl">
+    <div className="max-w-4xl mx-auto">
       <header className="mb-12 pb-8 border-b border-foreground/10">
         <p className="text-xs font-bold tracking-[0.3em] text-[var(--color-accent)] mb-3">
           [ BLOG / INDEX ]
