@@ -4,6 +4,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
 import { findLesson } from "@/config/blog";
+import { CodeBlock } from "@/components/CodeBlock";
 
 export const Route = createFileRoute("/blog/$chapterId/$lessonSlug")({
   loader: ({ params }) => {
@@ -47,7 +48,7 @@ function LessonPage() {
         {chapter.title.toUpperCase()}
       </p>
       <div
-        className="prose prose-neutral dark:prose-invert max-w-none
+        className="prose prose-neutral dark:prose-invert max-w-3xl
           prose-headings:tracking-tight prose-headings:font-extrabold
           prose-h1:text-4xl md:prose-h1:text-5xl prose-h1:leading-[1.05] prose-h1:mb-6
           prose-h2:text-2xl prose-h2:mt-10
@@ -55,13 +56,18 @@ function LessonPage() {
           prose-a:text-[var(--color-accent)] prose-a:no-underline hover:prose-a:underline
           prose-code:before:content-none prose-code:after:content-none
           prose-code:bg-foreground/10 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded
-          prose-code:font-mono prose-code:text-sm prose-code:font-normal
-          prose-pre:bg-[#0d1117] prose-pre:border prose-pre:border-foreground/10
-          prose-pre:rounded-md prose-pre:p-4 prose-pre:overflow-x-auto"
+          prose-code:font-mono prose-code:text-sm prose-code:font-normal"
       >
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           rehypePlugins={[[rehypeHighlight, { detect: true, ignoreMissing: true }]]}
+          components={{
+            pre: ({ children, ...props }) => (
+              <CodeBlock {...(props as React.HTMLAttributes<HTMLPreElement>)}>
+                {children}
+              </CodeBlock>
+            ),
+          }}
         >
           {lesson.content}
         </ReactMarkdown>

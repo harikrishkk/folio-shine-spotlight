@@ -30,7 +30,7 @@ function BlogLayout() {
         </div>
       </nav>
 
-      <div className="mx-auto max-w-6xl px-4 md:px-8 grid grid-cols-1 md:grid-cols-[240px_1fr] gap-10 py-10">
+      <div className="w-full px-4 md:px-8 grid grid-cols-1 md:grid-cols-[260px_1fr] gap-10 py-10">
         <aside className="md:sticky md:top-20 md:self-start md:max-h-[calc(100vh-6rem)] md:overflow-y-auto">
           <p className="text-xs font-bold tracking-[0.3em] text-[var(--color-accent)] mb-4">
             [ BLOG ]
