@@ -36,35 +36,38 @@ function BlogLayout() {
             <p className="text-xs font-bold tracking-[0.3em] text-[var(--color-accent)] mb-4">
               [ BLOG ]
             </p>
-            <nav className="flex flex-col gap-6 text-sm">
-              {BLOG.map((chapter) => (
-                <div key={chapter.id}>
-                  <h2 className="font-bold tracking-tight mb-2">{chapter.title}</h2>
-                  <ul className="flex flex-col">
-                    {chapter.lessons.map((l) => {
-                      const active =
-                        params.chapterId === chapter.id && params.lessonSlug === l.slug;
-                      return (
-                        <li key={l.slug}>
-                          <Link
-                            to="/blog/$chapterId/$lessonSlug"
-                            params={{ chapterId: chapter.id, lessonSlug: l.slug }}
-                            className={
-                              "block py-1.5 pl-3 border-l transition-colors " +
-                              (active
-                                ? "border-[var(--color-accent)] text-[var(--color-accent)] font-semibold"
-                                : "border-foreground/10 text-muted-foreground hover:text-foreground hover:border-foreground/40")
-                            }
-                          >
-                            {l.title}
-                          </Link>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              ))}
-            </nav>
+            {(() => {
+              const chapter = BLOG.find((c) => c.id === params.chapterId);
+              if (!chapter) return null;
+              return (
+                <nav className="flex flex-col gap-6 text-sm">
+                  <div>
+                    <h2 className="font-bold tracking-tight mb-2">{chapter.title}</h2>
+                    <ul className="flex flex-col">
+                      {chapter.lessons.map((l) => {
+                        const active = params.lessonSlug === l.slug;
+                        return (
+                          <li key={l.slug}>
+                            <Link
+                              to="/blog/$chapterId/$lessonSlug"
+                              params={{ chapterId: chapter.id, lessonSlug: l.slug }}
+                              className={
+                                "block py-1.5 pl-3 border-l transition-colors " +
+                                (active
+                                  ? "border-[var(--color-accent)] text-[var(--color-accent)] font-semibold"
+                                  : "border-foreground/10 text-muted-foreground hover:text-foreground hover:border-foreground/40")
+                              }
+                            >
+                              {l.title}
+                            </Link>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                </nav>
+              );
+            })()}
           </aside>
 
           <main className="min-w-0">
