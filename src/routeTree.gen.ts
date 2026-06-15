@@ -16,6 +16,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as CoursesIndexRouteImport } from './routes/courses.index'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as CoursesCourseIdRouteImport } from './routes/courses.$courseId'
+import { Route as BlogChapterIdLessonSlugRouteImport } from './routes/blog.$chapterId.$lessonSlug'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
@@ -52,6 +53,11 @@ const CoursesCourseIdRoute = CoursesCourseIdRouteImport.update({
   path: '/$courseId',
   getParentRoute: () => CoursesRoute,
 } as any)
+const BlogChapterIdLessonSlugRoute = BlogChapterIdLessonSlugRouteImport.update({
+  id: '/$chapterId/$lessonSlug',
+  path: '/$chapterId/$lessonSlug',
+  getParentRoute: () => BlogRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -61,6 +67,7 @@ export interface FileRoutesByFullPath {
   '/courses/$courseId': typeof CoursesCourseIdRoute
   '/blog/': typeof BlogIndexRoute
   '/courses/': typeof CoursesIndexRoute
+  '/blog/$chapterId/$lessonSlug': typeof BlogChapterIdLessonSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -68,6 +75,7 @@ export interface FileRoutesByTo {
   '/courses/$courseId': typeof CoursesCourseIdRoute
   '/blog': typeof BlogIndexRoute
   '/courses': typeof CoursesIndexRoute
+  '/blog/$chapterId/$lessonSlug': typeof BlogChapterIdLessonSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -78,6 +86,7 @@ export interface FileRoutesById {
   '/courses/$courseId': typeof CoursesCourseIdRoute
   '/blog/': typeof BlogIndexRoute
   '/courses/': typeof CoursesIndexRoute
+  '/blog/$chapterId/$lessonSlug': typeof BlogChapterIdLessonSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -89,8 +98,15 @@ export interface FileRouteTypes {
     | '/courses/$courseId'
     | '/blog/'
     | '/courses/'
+    | '/blog/$chapterId/$lessonSlug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/sitemap.xml' | '/courses/$courseId' | '/blog' | '/courses'
+  to:
+    | '/'
+    | '/sitemap.xml'
+    | '/courses/$courseId'
+    | '/blog'
+    | '/courses'
+    | '/blog/$chapterId/$lessonSlug'
   id:
     | '__root__'
     | '/'
@@ -100,6 +116,7 @@ export interface FileRouteTypes {
     | '/courses/$courseId'
     | '/blog/'
     | '/courses/'
+    | '/blog/$chapterId/$lessonSlug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -160,15 +177,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CoursesCourseIdRouteImport
       parentRoute: typeof CoursesRoute
     }
+    '/blog/$chapterId/$lessonSlug': {
+      id: '/blog/$chapterId/$lessonSlug'
+      path: '/$chapterId/$lessonSlug'
+      fullPath: '/blog/$chapterId/$lessonSlug'
+      preLoaderRoute: typeof BlogChapterIdLessonSlugRouteImport
+      parentRoute: typeof BlogRoute
+    }
   }
 }
 
 interface BlogRouteChildren {
   BlogIndexRoute: typeof BlogIndexRoute
+  BlogChapterIdLessonSlugRoute: typeof BlogChapterIdLessonSlugRoute
 }
 
 const BlogRouteChildren: BlogRouteChildren = {
   BlogIndexRoute: BlogIndexRoute,
+  BlogChapterIdLessonSlugRoute: BlogChapterIdLessonSlugRoute,
 }
 
 const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
