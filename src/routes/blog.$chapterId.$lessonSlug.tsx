@@ -5,6 +5,7 @@ import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
 import { findLesson } from "@/config/blog";
 import { CodeBlock } from "@/components/CodeBlock";
+import { GiscusComments } from "@/components/GiscusComments";
 
 export const Route = createFileRoute("/blog/$chapterId/$lessonSlug")({
   loader: ({ params }) => {
@@ -105,6 +106,8 @@ function LessonPage() {
           )}
         </div>
       </nav>
+
+      <GiscusComments />
     </article>
   );
 }
