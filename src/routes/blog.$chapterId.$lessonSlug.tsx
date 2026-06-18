@@ -106,6 +106,8 @@ function LessonPage() {
           )}
         </div>
       </nav>
+
+      <GiscusComments />
     </article>
   );
 }
