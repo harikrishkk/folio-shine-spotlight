@@ -8,7 +8,7 @@ import {
   CarouselItem,
   type CarouselApi,
 } from "@/components/ui/carousel";
-import { Menu, X, ArrowRight, ArrowLeft, Github, Linkedin, Sun, Moon } from "lucide-react";
+import { Menu, X, ArrowRight, ArrowLeft, Github, Linkedin, Sun, Moon, ChevronDown } from "lucide-react";
 import { siteConfig } from "@/config/site";
 
 export const Route = createFileRoute("/")({
