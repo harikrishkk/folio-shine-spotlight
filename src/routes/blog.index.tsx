@@ -97,7 +97,7 @@ function BlogLanding() {
       </div>
 
       {totalPages > 1 && (
-        -nav
+        <nav
           aria-label="Blog pagination"
           className="mt-16 pt-8 border-t border-foreground/10 flex items-center justify-between"
         >
