@@ -29,6 +29,7 @@ function Index() {
   const [current, setCurrent] = React.useState(0);
   const autoplay = React.useRef(Autoplay({ delay: 5000, stopOnInteraction: false }));
   const [theme, setTheme] = React.useState<"light" | "dark">("light");
+  const [showAllTimeline, setShowAllTimeline] = React.useState(false);
 
   React.useEffect(() => {
     const stored = localStorage.getItem("theme") as "light" | "dark" | null;
