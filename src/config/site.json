@@ -37,24 +37,28 @@
     "items": [
       {
         "period": "2022 — PRESENT",
-        "role": "Staff Frontend Engineer @ TechScale",
-        "blurb": "Leading core platform rewrite for 500k DAU. Signals-first Angular architecture across 12 squads.",
+        "role": "Lead Angular Consultant @ BMO",
+        "blurb": "Experienced Angular Lead responsible for managing multiple concurrent projects, coordinating cross-functional teams across onsite and offshore locations, and driving successful project delivery. Currently leading the development and maintenance of Angular 21 and Ionic-based hybrid applications, with a strong focus on application modernization, framework migrations, and technical leadership.",
+        "tech": ["Angular", "TypeScript", "RxJS", "Ionic", "NX", "NgRx"],
         "active": true
       },
       {
         "period": "2019 — 2022",
         "role": "Senior UI Lead @ CloudSync",
-        "blurb": "Architected a React + React Native design system shared across four product teams."
+        "blurb": "Architected a React + React Native design system shared across four product teams.",
+        "tech": ["React", "React Native", "TypeScript", "Design Systems", "Storybook"]
       },
       {
         "period": "2016 — 2019",
         "role": "JavaScript Trainer @ CodeCraft",
-        "blurb": "Designed and delivered on-site Angular & React intensives for Fortune 500 engineering orgs."
+        "blurb": "Designed and delivered on-site Angular & React intensives for Fortune 500 engineering orgs.",
+        "tech": ["Angular", "React", "TypeScript", "JavaScript", "RxJS"]
       },
       {
         "period": "2013 — 2016",
         "role": "Frontend Engineer @ Peak Agency",
-        "blurb": "Shipped interactive data viz and design systems for global enterprise clients."
+        "blurb": "Shipped interactive data viz and design systems for global enterprise clients.",
+        "tech": ["JavaScript", "HTML5", "CSS3", "D3.js", "React"]
       }
     ]
   },
