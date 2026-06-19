@@ -365,11 +365,6 @@ function Index() {
                     </div>
                   )}
                 </div>
-                <ul className="text-sm space-y-2 text-muted mb-8">
-                  {w.bullets.map((b) => (
-                    <li key={b}>• {b}</li>
-                  ))}
-                </ul>
                 {w.courseId ? (
                   <Link
                     to="/courses/$courseId"
