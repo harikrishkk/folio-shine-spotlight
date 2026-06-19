@@ -38,26 +38,10 @@ function BlogLanding() {
   const totalLessons = BLOG.reduce((n, c) => n + c.lessons.length, 0);
   const { page } = Route.useSearch();
 
-  // Flatten lessons while keeping chapter context.
-  const flat = BLOG.flatMap((chapter) =>
-    chapter.lessons.map((lesson, indexInChapter) => ({
-      chapter,
-      lesson,
-      indexInChapter,
-    })),
-  );
-  const totalPages = Math.max(1, Math.ceil(flat.length / PAGE_SIZE));
+  const totalPages = Math.max(1, Math.ceil(BLOG.length / PAGE_SIZE));
   const currentPage = Math.min(Math.max(1, page), totalPages);
   const start = (currentPage - 1) * PAGE_SIZE;
-  const pageItems = flat.slice(start, start + PAGE_SIZE);
-
-  // Re-group page items by chapter so headings still render.
-  const grouped: { chapter: typeof BLOG[number]; items: typeof pageItems }[] = [];
-  for (const item of pageItems) {
-    const last = grouped[grouped.length - 1];
-    if (last && last.chapter.id === item.chapter.id) last.items.push(item);
-    else grouped.push({ chapter: item.chapter, items: [item] });
-  }
+  const pageChapters = BLOG.slice(start, start + PAGE_SIZE);
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -74,45 +58,42 @@ function BlogLanding() {
         </p>
       </header>
 
-      <div className="flex flex-col gap-12">
-        {grouped.map(({ chapter, items }) => (
-          <section key={chapter.id + "-" + currentPage}>
-            <div className="flex items-baseline justify-between mb-5">
-              <h2 className="text-2xl font-bold tracking-tight">
-                {chapter.title}
-              </h2>
-              <span className="text-xs text-muted-foreground font-mono">
-                {chapter.lessons.length.toString().padStart(2, "0")} lessons
-              </span>
-            </div>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {items.map(({ lesson: l, indexInChapter: i }) => (
-                <li key={chapter.id + "/" + l.slug}>
+      <div className="flex flex-col gap-8">
+        {pageChapters.map((chapter) => {
+          const first = chapter.lessons[0];
+          return (
+            <section
+              key={chapter.id}
+              className="group border border-foreground/10 hover:border-[var(--color-accent)] transition-colors p-6 md:p-8"
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-baseline gap-3 mb-2">
+                    <h2 className="text-xl md:text-2xl font-bold tracking-tight">
+                      {chapter.title}
+                    </h2>
+                    <span className="text-xs text-muted-foreground font-mono">
+                      {chapter.lessons.length.toString().padStart(2, "0")} lessons
+                    </span>
+                  </div>
+                  <p className="text-muted-foreground leading-relaxed max-w-2xl">
+                    {chapter.description}
+                  </p>
+                </div>
+                {first && (
                   <Link
                     to="/blog/$chapterId/$lessonSlug"
-                    params={{ chapterId: chapter.id, lessonSlug: l.slug }}
-                    className="group block h-full p-5 border border-foreground/10 hover:border-[var(--color-accent)] transition-colors"
+                    params={{ chapterId: chapter.id, lessonSlug: first.slug }}
+                    className="shrink-0 mt-1 inline-flex items-center gap-2 text-xs font-bold tracking-[0.2em] uppercase text-muted-foreground hover:text-[var(--color-accent)] transition-colors"
                   >
-                    <div className="flex items-start justify-between gap-4 mb-2">
-                      <span className="text-xs font-mono text-muted-foreground">
-                        {(i + 1).toString().padStart(2, "0")}
-                      </span>
-                      <ArrowRight className="size-4 opacity-0 group-hover:opacity-100 group-hover:text-[var(--color-accent)] transition-all -translate-x-1 group-hover:translate-x-0" />
-                    </div>
-                    <h3 className="font-bold tracking-tight mb-1 group-hover:text-[var(--color-accent)] transition-colors">
-                      {l.title}
-                    </h3>
-                    {l.excerpt && (
-                      <p className="text-sm text-muted-foreground leading-relaxed">
-                        {l.excerpt}
-                      </p>
-                    )}
+                    Read
+                    <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
                   </Link>
-                </li>
-              ))}
-            </ul>
-          </section>
-        ))}
+                )}
+              </div>
+            </section>
+          );
+        })}
       </div>
 
       {totalPages > 1 && (
