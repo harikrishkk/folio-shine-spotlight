@@ -70,24 +70,12 @@
       {
         "tag": "Level: Advanced",
         "title": "Angular Masterclass",
-        "courseId": "angular-masterclass",
-        "bullets": [
-          "Custom RxJS operators & reactive patterns",
-          "Zone-less signal architecture",
-          "Enterprise schematics & monorepo scaling",
-          "Performance profiling & hydration strategy"
-        ]
+        "courseId": "angular-masterclass"
       },
       {
         "tag": "Level: Expert",
         "title": "React Performance",
-        "courseId": "react-performance",
-        "bullets": [
-          "Concurrent mode internals",
-          "Memory leak forensics in production",
-          "Server Components deep-dive",
-          "Streaming SSR & cache architecture"
-        ]
+        "courseId": "react-performance"
       }
     ]
   },

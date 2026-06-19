@@ -16,7 +16,6 @@ export type TimelineEntry = {
 export type Workshop = {
   tag: string;
   title: string;
-  bullets: string[];
   courseId?: string;
 };
 export type Testimonial = { quote: string; name: string; role: string; href?: string };
