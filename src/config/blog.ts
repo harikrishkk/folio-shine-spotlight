@@ -34,11 +34,12 @@ export type BlogLesson = {
 export type BlogChapter = {
   id: string;
   title: string;
+  description: string;
   lessons: BlogLesson[];
 };
 
 type LessonMeta = Omit<BlogLesson, "content">;
-type ChapterMeta = { id: string; title: string; lessons: LessonMeta[] };
+type ChapterMeta = { id: string; title: string; description: string; lessons: LessonMeta[] };
 
 // Lesson metadata only. Content for each lesson lives in
 // src/content/blog/<chapter.id>/<lesson.slug>.md
@@ -46,6 +47,7 @@ const CHAPTERS: ChapterMeta[] = [
   {
     id: "angular",
     title: "Modern Angular",
+    description: "Signals, change detection, and building reactive UIs without the footguns. A chapter-by-chapter walkthrough of what actually works in production Angular.",
     lessons: [
       { slug: "intro", title: "Intro", excerpt: "Why a fresh take on Angular matters in 2026." },
       { slug: "signals", title: "Signals from scratch", excerpt: "The primitive, the graph, and the trap most teams fall into." },
@@ -55,6 +57,7 @@ const CHAPTERS: ChapterMeta[] = [
   {
     id: "react",
     title: "React Performance",
+    description: "Concurrent features, server components, and the rendering pipeline. Understanding React's internals so you stop fighting the framework.",
     lessons: [
       { slug: "concurrent", title: "Concurrent rendering", excerpt: "Lanes, transitions, and the cost of getting them wrong." },
     ],
@@ -64,6 +67,7 @@ const CHAPTERS: ChapterMeta[] = [
 export const BLOG: BlogChapter[] = CHAPTERS.map((c) => ({
   id: c.id,
   title: c.title,
+  description: c.description,
   lessons: c.lessons.map((l) => ({ ...l, content: loadContent(c.id, l.slug) })),
 }));
 
