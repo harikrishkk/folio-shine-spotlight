@@ -1,8 +1,17 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { BLOG } from "@/config/blog";
+import { zodValidator, fallback } from "@tanstack/zod-adapter";
+import { z } from "zod";
+
+const PAGE_SIZE = 6;
+
+const searchSchema = z.object({
+  page: fallback(z.number().int().min(1), 1).default(1),
+});
 
 export const Route = createFileRoute("/blog/")({
+  validateSearch: zodValidator(searchSchema),
   head: () => ({
     meta: [
       { title: "Blog — Hari Krishnan" },
@@ -27,6 +36,28 @@ export const Route = createFileRoute("/blog/")({
 
 function BlogLanding() {
   const totalLessons = BLOG.reduce((n, c) => n + c.lessons.length, 0);
+  const { page } = Route.useSearch();
+
+  // Flatten lessons while keeping chapter context.
+  const flat = BLOG.flatMap((chapter) =>
+    chapter.lessons.map((lesson, indexInChapter) => ({
+      chapter,
+      lesson,
+      indexInChapter,
+    })),
+  );
+  const totalPages = Math.max(1, Math.ceil(flat.length / PAGE_SIZE));
+  const currentPage = Math.min(Math.max(1, page), totalPages);
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const pageItems = flat.slice(start, start + PAGE_SIZE);
+
+  // Re-group page items by chapter so headings still render.
+  const grouped: { chapter: typeof BLOG[number]; items: typeof pageItems }[] = [];
+  for (const item of pageItems) {
+    const last = grouped[grouped.length - 1];
+    if (last && last.chapter.id === item.chapter.id) last.items.push(item);
+    else grouped.push({ chapter: item.chapter, items: [item] });
+  }
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -44,8 +75,8 @@ function BlogLanding() {
       </header>
 
       <div className="flex flex-col gap-12">
-        {BLOG.map((chapter) => (
-          <section key={chapter.id}>
+        {grouped.map(({ chapter, items }) => (
+          <section key={chapter.id + "-" + currentPage}>
             <div className="flex items-baseline justify-between mb-5">
               <h2 className="text-2xl font-bold tracking-tight">
                 {chapter.title}
@@ -55,8 +86,8 @@ function BlogLanding() {
               </span>
             </div>
             <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {chapter.lessons.map((l, i) => (
-                <li key={l.slug}>
+              {items.map(({ lesson: l, indexInChapter: i }) => (
+                <li key={chapter.id + "/" + l.slug}>
                   <Link
                     to="/blog/$chapterId/$lessonSlug"
                     params={{ chapterId: chapter.id, lessonSlug: l.slug }}
@@ -83,6 +114,64 @@ function BlogLanding() {
           </section>
         ))}
       </div>
+
+      {totalPages > 1 && (
+        <nav
+          aria-label="Blog pagination"
+          className="mt-16 pt-8 border-t border-foreground/10 flex items-center justify-between"
+        >
+          <Link
+            to="/blog"
+            search={{ page: Math.max(1, currentPage - 1) }}
+            disabled={currentPage === 1}
+            aria-disabled={currentPage === 1}
+            className={
+              "text-xs font-bold tracking-[0.2em] uppercase transition-colors " +
+              (currentPage === 1
+                ? "text-muted-foreground/40 pointer-events-none"
+                : "hover:text-[var(--color-accent)]")
+            }
+          >
+            ← Prev
+          </Link>
+
+          <div className="flex items-center gap-2">
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => {
+              const active = n === currentPage;
+              return (
+                <Link
+                  key={n}
+                  to="/blog"
+                  search={{ page: n }}
+                  className={
+                    "size-8 inline-flex items-center justify-center text-xs font-mono border transition-colors " +
+                    (active
+                      ? "border-[var(--color-accent)] text-[var(--color-accent)]"
+                      : "border-foreground/10 text-muted-foreground hover:border-foreground/40 hover:text-foreground")
+                  }
+                >
+                  {n.toString().padStart(2, "0")}
+                </Link>
+              );
+            })}
+          </div>
+
+          <Link
+            to="/blog"
+            search={{ page: Math.min(totalPages, currentPage + 1) }}
+            disabled={currentPage === totalPages}
+            aria-disabled={currentPage === totalPages}
+            className={
+              "text-xs font-bold tracking-[0.2em] uppercase transition-colors " +
+              (currentPage === totalPages
+                ? "text-muted-foreground/40 pointer-events-none"
+                : "hover:text-[var(--color-accent)]")
+            }
+          >
+            Next →
+          </Link>
+        </nav>
+      )}
     </div>
   );
 }
