@@ -306,7 +306,7 @@ function Index() {
                   </p>
                   <h3 className="text-lg md:text-xl font-extrabold">{t.role}</h3>
                   <p className="text-muted text-sm mt-2 leading-relaxed">{t.blurb}</p>
-                  <div className="flex flex-wrap gap-2 mt-4">
+                  <div className="flex flex-wrap items-center gap-2 mt-4">
                     <span className="text-[10px] font-bold uppercase tracking-tight text-muted-foreground">
                       Stack:
                     </span>
