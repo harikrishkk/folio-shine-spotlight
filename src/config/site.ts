@@ -10,6 +10,7 @@ export type TimelineEntry = {
   period: string;
   role: string;
   blurb: string;
+  tech: string[];
   active?: boolean;
 };
 export type Workshop = {

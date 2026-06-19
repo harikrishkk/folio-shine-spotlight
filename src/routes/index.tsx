@@ -306,6 +306,19 @@ function Index() {
                   </p>
                   <h3 className="text-lg md:text-xl font-extrabold">{t.role}</h3>
                   <p className="text-muted text-sm mt-2 leading-relaxed">{t.blurb}</p>
+                  <div className="flex flex-wrap gap-2 mt-4">
+                    <span className="text-[10px] font-bold uppercase tracking-tight text-muted-foreground">
+                      Stack:
+                    </span>
+                    {t.tech.map((tag) => (
+                      <span
+                        key={tag}
+                        className="text-[10px] font-bold uppercase tracking-tight border border-foreground/10 px-2 py-0.5 text-foreground/70 hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               ))}
             </div>
