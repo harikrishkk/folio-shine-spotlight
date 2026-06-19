@@ -8,7 +8,7 @@ import {
   CarouselItem,
   type CarouselApi,
 } from "@/components/ui/carousel";
-import { Menu, X, ArrowRight, ArrowLeft, Github, Linkedin, Sun, Moon } from "lucide-react";
+import { Menu, X, ArrowRight, ArrowLeft, Github, Linkedin, Sun, Moon, ChevronDown } from "lucide-react";
 import { siteConfig } from "@/config/site";
 
 export const Route = createFileRoute("/")({
@@ -29,6 +29,7 @@ function Index() {
   const [current, setCurrent] = React.useState(0);
   const autoplay = React.useRef(Autoplay({ delay: 5000, stopOnInteraction: false }));
   const [theme, setTheme] = React.useState<"light" | "dark">("light");
+  const [showAllTimeline, setShowAllTimeline] = React.useState(false);
 
   React.useEffect(() => {
     const stored = localStorage.getItem("theme") as "light" | "dark" | null;
@@ -294,7 +295,7 @@ function Index() {
             </h2>
             <div className="space-y-10 relative">
               <div className="absolute left-[7px] top-2 bottom-2 w-px bg-foreground/10" />
-              {TIMELINE.map((t) => (
+              {TIMELINE.slice(0, showAllTimeline ? undefined : 2).map((t) => (
                 <div key={t.period} className="relative pl-8">
                   <div
                     className={`absolute left-0 top-1.5 size-4 rounded-full ring-4 ring-background ${t.active ? "bg-[var(--color-accent)]" : "bg-foreground/20"}`}
@@ -329,6 +330,16 @@ function Index() {
                   </div>
                 </div>
               ))}
+              {!showAllTimeline && TIMELINE.length > 2 && (
+                <button
+                  type="button"
+                  onClick={() => setShowAllTimeline(true)}
+                  className="relative pl-8 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-muted hover:text-[var(--color-accent)] transition-colors cursor-pointer"
+                >
+                  <span>Show more</span>
+                  <ChevronDown className="size-4" />
+                </button>
+              )}
             </div>
           </div>
 
