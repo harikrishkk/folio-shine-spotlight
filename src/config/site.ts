@@ -9,7 +9,7 @@ export type Stat = { num: string; label: string };
 export type TimelineEntry = {
   period: string;
   role: string;
-  blurb: string;
+  blurb: string | string[];
   tech: string[];
   active?: boolean;
 };
