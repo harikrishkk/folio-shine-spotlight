@@ -1,9 +1,28 @@
 // =====================================================================
-// Blog configuration. Chapters group related lessons; each lesson has a
-// markdown body that supports headings, lists, links, and fenced code
-// blocks (rendered with syntax highlighting). Edit this file to add or
-// rewrite content — no other files need to change.
+// Blog configuration. Chapters group related lessons; each lesson's body
+// is a Markdown file under `src/content/blog/<chapterId>/<slug>.md`.
+// Edit this file only to add/remove/reorder lessons or change titles.
+// Body content lives in the markdown files.
 // =====================================================================
+
+// Eagerly load every markdown file under src/content/blog as a raw string.
+// Key shape: "/src/content/blog/<chapterId>/<slug>.md"
+const MARKDOWN_FILES = import.meta.glob("/src/content/blog/**/*.md", {
+  query: "?raw",
+  import: "default",
+  eager: true,
+}) as Record<string, string>;
+
+function loadContent(chapterId: string, slug: string): string {
+  const key = `/src/content/blog/${chapterId}/${slug}.md`;
+  const md = MARKDOWN_FILES[key];
+  if (!md) {
+    throw new Error(
+      `Missing markdown file for lesson "${chapterId}/${slug}". Expected ${key}.`,
+    );
+  }
+  return md;
+}
 
 export type BlogLesson = {
   slug: string;
@@ -18,125 +37,35 @@ export type BlogChapter = {
   lessons: BlogLesson[];
 };
 
-export const BLOG: BlogChapter[] = [
+type LessonMeta = Omit<BlogLesson, "content">;
+type ChapterMeta = { id: string; title: string; lessons: LessonMeta[] };
+
+// Lesson metadata only. Content for each lesson lives in
+// src/content/blog/<chapter.id>/<lesson.slug>.md
+const CHAPTERS: ChapterMeta[] = [
   {
     id: "angular",
     title: "Modern Angular",
     lessons: [
-      {
-        slug: "intro",
-        title: "Intro",
-        excerpt: "Why a fresh take on Angular matters in 2026.",
-        content: `# Intro
-
-Angular has changed more in the last three releases than in the five before
-them. Signals, zoneless change detection, and deferrable views are not
-incremental — they shift how you architect an app.
-
-This series is a working notebook for senior engineers who already ship
-Angular and want a sharper mental model of the runtime.
-
-## What you will get
-
-- Short chapters, each focused on one mechanism.
-- Runnable code, not pseudocode.
-- Opinionated guidance on what to use, what to skip.
-`,
-      },
-      {
-        slug: "signals",
-        title: "Signals from scratch",
-        excerpt: "The primitive, the graph, and the trap most teams fall into.",
-        content: `# Signals from scratch
-
-A signal is a reactive value with a known set of consumers. When the value
-changes, every consumer is scheduled — not run synchronously.
-
-\`\`\`ts
-import { signal, computed, effect } from '@angular/core';
-
-const count = signal(0);
-const double = computed(() => count() * 2);
-
-effect(() => console.log('double is', double()));
-
-count.set(2); // logs: "double is 4"
-\`\`\`
-
-## The trap
-
-Reading a signal inside a \`computed\` registers a dependency. Reading the
-same signal inside a plain function does not. That asymmetry is the source
-of 90% of "why didn't it update?" bugs.
-`,
-      },
-      {
-        slug: "directives",
-        title: "Custom directives",
-        excerpt: "Encapsulate DOM behavior without leaking jQuery into 2026.",
-        content: `# Custom directives
-
-Directives are enhancements for elements. Unlike components, they don't
-have a template — they attach behavior to an existing host.
-
-\`\`\`ts
-import { Directive, ElementRef, HostListener, inject } from '@angular/core';
-
-@Directive({ selector: '[appToggleOpen]', standalone: true })
-export class ToggleOpenDirective {
-  private host = inject(ElementRef<HTMLElement>);
-
-  @HostListener('click')
-  onClick() {
-    this.host.nativeElement.classList.toggle('is-open');
-  }
-}
-\`\`\`
-
-Use \`Renderer2\` instead of \`classList\` when you care about SSR — the DOM
-API is not available on the server.
-`,
-      },
+      { slug: "intro", title: "Intro", excerpt: "Why a fresh take on Angular matters in 2026." },
+      { slug: "signals", title: "Signals from scratch", excerpt: "The primitive, the graph, and the trap most teams fall into." },
+      { slug: "directives", title: "Custom directives", excerpt: "Encapsulate DOM behavior without leaking jQuery into 2026." },
     ],
   },
   {
     id: "react",
     title: "React Performance",
     lessons: [
-      {
-        slug: "concurrent",
-        title: "Concurrent rendering",
-        excerpt: "Lanes, transitions, and the cost of getting them wrong.",
-        content: `# Concurrent rendering
-
-React 18 didn't add APIs on top of an old scheduler — it rewrote the
-scheduler. Renders are now assigned to **lanes** with priorities.
-
-\`\`\`tsx
-import { startTransition, useState } from 'react';
-
-function Search({ items }: { items: string[] }) {
-  const [query, setQuery] = useState('');
-  const [results, setResults] = useState(items);
-
-  return (
-    <input
-      value={query}
-      onChange={(e) => {
-        setQuery(e.target.value);
-        startTransition(() => {
-          setResults(items.filter((i) => i.includes(e.target.value)));
-        });
-      }}
-    />
-  );
-}
-\`\`\`
-`,
-      },
+      { slug: "concurrent", title: "Concurrent rendering", excerpt: "Lanes, transitions, and the cost of getting them wrong." },
     ],
   },
 ];
+
+export const BLOG: BlogChapter[] = CHAPTERS.map((c) => ({
+  id: c.id,
+  title: c.title,
+  lessons: c.lessons.map((l) => ({ ...l, content: loadContent(c.id, l.slug) })),
+}));
 
 export type BlogLessonRef = {
   chapter: BlogChapter;
