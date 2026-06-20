@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 import { COURSES } from "@/lib/courses";
-import { BLOG } from "@/config/blog";
+import { BLOG } from "@/lib/blog";
 
 // TODO: replace with your project URL once a project name or custom domain is set.
 const BASE_URL = "";

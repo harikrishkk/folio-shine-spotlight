@@ -3,7 +3,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
-import { findLesson } from "@/config/blog";
+import { findLesson } from "@/lib/blog";
 import { CodeBlock } from "@/components/CodeBlock";
 import { GiscusComments } from "@/components/GiscusComments";
 
