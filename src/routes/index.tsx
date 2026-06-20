@@ -452,20 +452,19 @@ function Index() {
                         .join("")}
                     </div>
                     <div>
-                      {t.href ? (
+                      <p className="font-bold">{t.name.toUpperCase()}</p>
+                      <p className="text-xs text-background/50">{t.role}</p>
+                      {t.href && (
                         <a
                           href={t.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="font-bold hover:text-[var(--color-accent)] transition-colors inline-flex items-center gap-2"
+                          className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-accent)] hover:underline underline-offset-4 inline-flex items-center gap-1 mt-1"
                         >
-                          {t.name.toUpperCase()}
-                          <Linkedin className="size-3.5" />
+                          <Linkedin className="size-3" />
+                          Read on LinkedIn
                         </a>
-                      ) : (
-                        <p className="font-bold">{t.name.toUpperCase()}</p>
                       )}
-                      <p className="text-xs text-background/50">{t.role}</p>
                     </div>
                   </div>
                 </CarouselItem>

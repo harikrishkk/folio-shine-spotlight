@@ -85,22 +85,26 @@
       {
         "quote": "Hari doesn't just teach code; he teaches systems thinking. Our entire frontend team level-up happened in just three days.",
         "name": "Sarah Chen",
-        "role": "CTO, NEXUS LABS"
+        "role": "CTO, NEXUS LABS",
+        "href": "https://www.linkedin.com/in/sarah-chen"
       },
       {
         "quote": "The most intensive Angular training we've ever booked. We refactored architecture debt in real-time during the workshop.",
         "name": "Marcus Thorne",
-        "role": "VP ENGINEERING, FINTECH FLOW"
+        "role": "VP ENGINEERING, FINTECH FLOW",
+        "href": "https://www.linkedin.com/in/marcus-thorne"
       },
       {
         "quote": "A rare blend of high-level architecture and hands-on coding. His React Performance module changed how my team profiles.",
         "name": "Elena Rodriguez",
-        "role": "STAFF ENGINEER, GLOBAL LOGISTICS"
+        "role": "STAFF ENGINEER, GLOBAL LOGISTICS",
+        "href": "https://www.linkedin.com/in/elena-rodriguez"
       },
       {
         "quote": "Hari's RxJS deep-dive single-handedly unblocked our migration. Worth every cent for any team scaling Angular.",
         "name": "Liam Zhao",
-        "role": "ENGINEERING MANAGER, DATAFLUX"
+        "role": "ENGINEERING MANAGER, DATAFLUX",
+        "href": "https://www.linkedin.com/in/liam-zhao"
       }
     ]
   },
