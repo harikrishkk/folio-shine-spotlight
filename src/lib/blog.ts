@@ -81,7 +81,7 @@ for (const [path, src] of Object.entries(MARKDOWN_FILES)) {
   chapter.lessons.push({
     slug,
     title: data.title ?? firstHeading(body) ?? titleCase(slug),
-    excerpt: data.excerpt ?? firstParagraph(body) || undefined,
+    excerpt: data.excerpt ?? (firstParagraph(body) || undefined),
     content: body,
   });
 }
