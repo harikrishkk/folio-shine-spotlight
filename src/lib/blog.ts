@@ -13,6 +13,7 @@ export type BlogLesson = {
   slug: string;
   title: string;
   excerpt?: string;
+  order: number;
   content: string;
 };
 
