@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { COURSES } from "@/config/courses";
+import { COURSES, type Course } from "@/lib/courses";
 
 export const Route = createFileRoute("/courses/")({
   head: () => ({
@@ -59,7 +59,7 @@ function CoursesIndex() {
         </header>
 
         <ul className="border-t border-foreground/10">
-          {COURSES.map((c) => (
+          {COURSES.map((c: Course) => (
             <li key={c.id} className="border-b border-foreground/10">
               <Link
                 to="/courses/$courseId"
