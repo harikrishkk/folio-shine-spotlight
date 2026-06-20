@@ -83,6 +83,7 @@ for (const [path, src] of Object.entries(MARKDOWN_FILES)) {
     slug,
     title: data.title ?? firstHeading(body) ?? titleCase(slug),
     excerpt: data.excerpt ?? (firstParagraph(body) || undefined),
+    order: data.order ? Number(data.order) : Number.POSITIVE_INFINITY,
     content: body,
   });
 }
