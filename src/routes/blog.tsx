@@ -1,6 +1,6 @@
 import { createFileRoute, Link, Outlet, useParams } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
-import { BLOG } from "@/config/blog";
+import { BLOG } from "@/lib/blog";
 import "highlight.js/styles/github-dark.css";
 
 export const Route = createFileRoute("/blog")({

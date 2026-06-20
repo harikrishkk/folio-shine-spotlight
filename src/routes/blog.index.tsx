@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
-import { BLOG } from "@/config/blog";
+import { BLOG } from "@/lib/blog";
 import { zodValidator, fallback } from "@tanstack/zod-adapter";
 import { z } from "zod";
 
