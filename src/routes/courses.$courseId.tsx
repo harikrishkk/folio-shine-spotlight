@@ -1,24 +1,10 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
-import { COURSES, type CourseTopic } from "@/config/courses";
-
-function getSummary(markdown: string): string {
-  // Strip code fences, headings, list bullets, then take first non-empty paragraph.
-  const cleaned = markdown
-    .replace(/```[\s\S]*?```/g, "")
-    .split("\n")
-    .map((l) => l.trim())
-    .filter((l) => l && !l.startsWith("#"))
-    .join(" ")
-    .replace(/[*_`]/g, "")
-    .replace(/\s+/g, " ")
-    .trim();
-  return cleaned.length > 220 ? cleaned.slice(0, 217) + "…" : cleaned;
-}
+import { COURSES, type CourseTopic, type Course } from "@/lib/courses";
 
 export const Route = createFileRoute("/courses/$courseId")({
   loader: ({ params }) => {
-    const course = COURSES.find((c) => c.id === params.courseId);
+    const course = COURSES.find((c: Course) => c.id === params.courseId);
     if (!course) throw notFound();
     return { course };
   },
@@ -110,7 +96,7 @@ function CoursePage() {
         </h2>
         <ol className="flex flex-col divide-y divide-foreground/10 border-y border-foreground/10">
           {topics.map((t: CourseTopic, i: number) => (
-            <li key={t.slug} className="py-6 flex gap-6">
+            <li key={t.title} className="py-6 flex gap-6">
               <span className="font-mono text-sm text-[var(--color-accent)] pt-1 shrink-0 w-8">
                 {String(i + 1).padStart(2, "0")}
               </span>
@@ -119,7 +105,7 @@ function CoursePage() {
                   {t.title}
                 </h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  {getSummary(t.content)}
+                  {t.description}
                 </p>
               </div>
             </li>
