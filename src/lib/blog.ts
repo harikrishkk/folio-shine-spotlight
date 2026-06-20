@@ -96,7 +96,7 @@ export const BLOG: BlogChapter[] = Array.from(byChapter.values())
       title: c.index?.data.title ?? titleCase(c.id),
       description: c.index?.data.description ?? (c.index ? firstParagraph(c.index.body) : ""),
       order: Number.isFinite(order) ? order : Number.POSITIVE_INFINITY,
-      lessons: c.lessons.sort((a, b) => a.slug.localeCompare(b.slug)),
+      lessons: c.lessons.sort((a, b) => a.order - b.order || a.slug.localeCompare(b.slug)),
     };
   })
   .sort((a, b) => a.order - b.order || a.title.localeCompare(b.title));
