@@ -68,6 +68,19 @@ function LessonPage() {
                 {children}
               </CodeBlock>
             ),
+            img: ({ src, alt, ...props }) => {
+              const resolved =
+                typeof src === "string" && lesson.images[src] ? lesson.images[src] : src;
+              return (
+                <img
+                  {...props}
+                  src={resolved as string}
+                  alt={alt ?? ""}
+                  loading="lazy"
+                  className="rounded-md border border-foreground/10"
+                />
+              );
+            },
           }}
         >
           {lesson.content}

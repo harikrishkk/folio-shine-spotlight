@@ -9,12 +9,21 @@ const MARKDOWN_FILES = import.meta.glob("/src/content/blog/**/*.md", {
   eager: true,
 }) as Record<string, string>;
 
+// Bundle any images that live next to lesson markdown so authors can write
+// `![alt](./diagram.png)` or `![alt](diagram.png)` in their .md files.
+const IMAGE_FILES = import.meta.glob(
+  "/src/content/blog/**/*.{png,jpg,jpeg,gif,svg,webp,avif}",
+  { eager: true, import: "default", query: "?url" },
+) as Record<string, string>;
+
 export type BlogLesson = {
   slug: string;
   title: string;
   excerpt?: string;
   order: number;
   content: string;
+  /** Map of relative image paths used in the markdown to their bundled URL. */
+  images: Record<string, string>;
 };
 
 export type BlogChapter = {
@@ -79,12 +88,23 @@ for (const [path, src] of Object.entries(MARKDOWN_FILES)) {
     continue;
   }
 
+  // Resolve images that sit in this lesson's chapter folder.
+  const folder = path.slice(0, path.lastIndexOf("/") + 1);
+  const images: Record<string, string> = {};
+  for (const [imgPath, url] of Object.entries(IMAGE_FILES)) {
+    if (!imgPath.startsWith(folder)) continue;
+    const name = imgPath.slice(folder.length);
+    images[name] = url;
+    images["./" + name] = url;
+  }
+
   chapter.lessons.push({
     slug,
     title: data.title ?? firstHeading(body) ?? titleCase(slug),
     excerpt: data.excerpt ?? (firstParagraph(body) || undefined),
     order: data.order ? Number(data.order) : Number.POSITIVE_INFINITY,
     content: body,
+    images,
   });
 }
 
