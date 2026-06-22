@@ -49,7 +49,7 @@ function LessonPage() {
         {chapter.title.toUpperCase()}
       </p>
       <div
-        className="prose prose-neutral dark:prose-invert max-w-3xl
+        className="prose prose-neutral dark:prose-invert max-w-none
           prose-headings:tracking-tight prose-headings:font-extrabold
           prose-h1:text-4xl md:prose-h1:text-5xl prose-h1:leading-[1.05] prose-h1:mb-6
           prose-h2:text-2xl prose-h2:mt-10
