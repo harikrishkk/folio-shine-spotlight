@@ -436,22 +436,22 @@ function Index() {
             setApi={setApi}
             opts={{ loop: true, align: "start" }}
             plugins={[autoplay.current]}
-            className="max-w-5xl"
+            className="max-w-5xl mx-auto"
           >
             <CarouselContent>
               {TESTIMONIALS.map((t, i) => (
                 <CarouselItem key={i}>
-                  <blockquote className="text-2xl sm:text-3xl md:text-5xl font-extrabold tracking-tight leading-tight italic text-balance">
+                  <blockquote className="text-2xl sm:text-3xl md:text-5xl font-extrabold tracking-tight leading-tight italic text-balance text-center">
                     “{t.quote}”
                   </blockquote>
-                  <div className="mt-8 flex items-center gap-4">
+                  <div className="mt-8 flex items-center justify-center gap-4">
                     <div className="size-12 rounded-full bg-[var(--color-accent)]/20 grid place-items-center text-[10px] font-bold">
                       {t.name
                         .split(" ")
                         .map((n) => n[0])
                         .join("")}
                     </div>
-                    <div>
+                    <div className="text-center">
                       <p className="font-bold">{t.name.toUpperCase()}</p>
                       <p className="text-xs text-background/50">{t.role}</p>
                       {t.href && (
@@ -459,7 +459,7 @@ function Index() {
                           href={t.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-accent)] hover:underline underline-offset-4 inline-flex items-center gap-1 mt-1"
+                          className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-accent)] hover:underline underline-offset-4 inline-flex items-center gap-1 mt-1 justify-center"
                         >
                           <Linkedin className="size-3" />
                           Read on LinkedIn
